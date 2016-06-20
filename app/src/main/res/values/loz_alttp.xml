@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="loz_alttp_list">
+        <item>Light World</item>
+        <item>Dark World</item>
+        <item>Hyrule Castle Dungeon</item>
+    </string-array>
+</resources>

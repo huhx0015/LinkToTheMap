@@ -1,0 +1,34 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="OPTIONS"
+        android:key="lttp_options">
+        <ListPreference
+            android:key="lttp_language"
+            android:title="LANGUAGE"
+            android:defaultValue="English" />
+        <CheckBoxPreference
+            android:key="lttp_overlay_on"
+            android:title="LABELS"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="lttp_music_on"
+            android:title="MUSIC"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="lttp_sound_on"
+            android:title="SOUND"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="lttp_initial_launch"
+            android:title="INITIAL LAUNCH"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="lttp_texture_support"
+            android:title="4K TEXTURE SUPPORT"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="lttp_low_ram"
+            android:title="LOW RAM"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

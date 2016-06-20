@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/world_view_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/black">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map_location_underlay"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/world_map_underlay"
+        android:scaleType="matrix" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/world_map_view"
+        android:scaleType="matrix"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="matrix"
+        android:id="@+id/world_map_overlay"
+        android:layout_gravity="center" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/lttp_loading_display">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/loz_lttp_menu_background"
+            android:id="@+id/dg_background_display">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lttp_loading_background"
+                android:layout_gravity="center"
+                android:scaleType="fitXY" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dg_loading_notice_layout"
+            android:layout_gravity="center|bottom"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dq_loading_notice"
+                android:textColor="#ffffff"
+                android:textSize="28sp"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center_horizontal|bottom"
+                android:typeface="monospace"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="LOADING"
+                android:background="@drawable/loz_lttp_menu_background" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:id="@+id/lttp_map_bar_bottom"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_gravity="left|bottom"
+            android:id="@+id/dq_map_left_button_container">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/loz_alttp_square_background"
+                android:id="@+id/dq_map_icon_container"
+                android:clickable="false"
+                android:layout_gravity="left">
+
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/lttp_map_icon"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/loz_alttp_map_icon"
+                    android:padding="2dp" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dq_map_right_button_container"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:padding="16dp">
+
+            <Button
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:id="@+id/zoomInPlus"
+                android:background="@drawable/loz_alttp_square_background"
+                android:text="+"
+                android:textColor="#ffffff"
+                android:layout_gravity="center_vertical"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:padding="4dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/zoom_button_spacer"
+                android:visibility="invisible"
+                android:padding="4dp" />
+
+            <Button
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:id="@+id/zoomOutMinus"
+                android:background="@drawable/loz_alttp_square_background"
+                android:text="-"
+                android:textColor="#ffffff"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"
+                android:padding="4dp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:id="@+id/lttp_map_bar_top">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dq_map_bar_1_layer"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dq_map_bar_1_sublayer"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dq_map_bar_spacer_1"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/loz_alttp_rect_background"
+                    android:id="@+id/lttp_map_search_spinner_container"
+                    android:gravity="center_vertical"
+                    android:clickable="false">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:id="@+id/dq_map_search_icon_container"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:visibility="gone">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_map_search_icon"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:id="@+id/dq_map_name_container"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_map_name"
+                            android:textSize="24sp"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+
+                        <Spinner
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical|left"
+                            android:id="@+id/lttp_map_spinner"
+                            android:spinnerMode="dialog"
+                            android:background="@drawable/lttm_transparent_tile"
+                            android:popupBackground="@android:color/transparent"
+                            android:clickable="true"
+                            android:visibility="invisible"/>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lttp_map_bar_2_layer"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lttp_map_bar_2_sublayer" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttm_map_bar_left"
+                    android:layout_gravity="left|center_vertical"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:layout_width="64dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/lttm_map_2f_button"
+                        android:background="@drawable/loz_alttp_dungeon_2f_background" />
+
+                    <ImageButton
+                        android:layout_width="64dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/lttm_map_1f_button"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/loz_alttp_dungeon_1f_background" />
+
+                    <ImageButton
+                        android:layout_width="64dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/lttm_map_b1_button"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/loz_alttp_dungeon_b1_background" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_8"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_inn_container"
+                    android:clickable="false"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/lttp_inn_subcontainer"
+                        android:clickable="false"
+                        android:padding="5dp" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_inn_icon"
+                            android:background="@android:color/transparent"
+                            android:clickable="false" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_2"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_equipment_icon_container"
+                    android:clickable="false"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/lttp_equipment_icon_subcontainer"
+                        android:clickable="false"
+                        android:padding="5dp" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_equipment_icon"
+                            android:background="@android:color/transparent"
+                            android:clickable="false" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_3"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_item_container"
+                    android:clickable="false"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/lttp_item_subcontainer"
+                        android:clickable="false"
+                        android:padding="5dp" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_item_icon"
+                            android:background="@android:color/transparent"
+                            android:clickable="false" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_4"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_travel_door_container"
+                    android:clickable="false"
+                    android:visibility="gone" >
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/lttp_travel_door_subcontainer"
+                        android:clickable="false"
+                        android:padding="5dp" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_travel_door_icon"
+                            android:background="@android:color/transparent"
+                            android:clickable="false" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_5"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_treasure_icon_container"
+                    android:clickable="false"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/lttp_treasure_icon_subcontainer"
+                        android:clickable="false"
+                        android:padding="5dp" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lttp_treasure_icon"
+                            android:background="@android:color/transparent"
+                            android:clickable="false" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lttp_map_bar_3_layer"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lttp_map_bar_3_sublayer" >
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_map_window_1"
+                    android:clickable="false"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lttp_list_1"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:gravity="left" />
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_6"
+                    android:padding="2dp"
+                    android:visibility="invisible" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_map_window_2"
+                    android:clickable="false"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lttp_list_2"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:gravity="left" />
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lttp_map_bar_spacer_7"
+                    android:padding="2dp"
+                    android:visibility="invisible" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/loz_lttp_menu_background"
+                    android:id="@+id/lttp_map_window_3"
+                    android:clickable="false"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lttp_list_3"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:gravity="left" />
+                </FrameLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </TableLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/lttp_fragment_container"
+        android:background="@drawable/lttm_dark_transparent_background"
+        android:visibility="gone">
+
+    </FrameLayout>
+
+</FrameLayout>
