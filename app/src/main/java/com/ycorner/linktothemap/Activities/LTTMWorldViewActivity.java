@@ -411,7 +411,7 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
 
         // TEXT VARIABLES:
         mapTitle.setTypeface(LTTMFont.getInstance(this).getTypeFace()); // Sets custom font properties.
-        TextView nowLoading = (TextView) findViewById(R.id.dq_loading_notice);
+        TextView nowLoading = (TextView) findViewById(R.id.lttm_loading_notice);
         nowLoading.setTypeface(LTTMFont.getInstance(this).getTypeFace()); // Sets custom font properties.
 
         updateMapTextSize();  // The mapTitle TextView object's font size is adjusted for layout formatting.
@@ -497,8 +497,8 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
             float scale = getResources().getDisplayMetrics().density;
             int dpToPixels = (int) (10 * scale + 0.5f); // Converts 10dp into pixels.
 
-            FrameLayout dq_map_icon_container = (FrameLayout) findViewById(R.id.dq_map_icon_container);
-            dq_map_icon_container.setPadding(dpToPixels, dpToPixels, dpToPixels, dpToPixels); // Sets the new padding size.
+            FrameLayout lttm_map_icon_container = (FrameLayout) findViewById(R.id.lttm_map_icon_container);
+            lttm_map_icon_container.setPadding(dpToPixels, dpToPixels, dpToPixels, dpToPixels); // Sets the new padding size.
         }
 
         // 1080p - 1440p: If the device's display size is 1080p or greater, the 1080p version of menu/search buttons
@@ -598,7 +598,7 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     private void setUpButtons() {
 
         // BUTTON VARIABLES
-        FrameLayout mapNameContainer = (FrameLayout) findViewById(R.id.dq_map_name_container);
+        FrameLayout mapNameContainer = (FrameLayout) findViewById(R.id.lttm_map_name_container);
         Button zoomIn = (Button) findViewById(R.id.zoomInPlus);
         Button zoomOut = (Button) findViewById(R.id.zoomOutMinus);
 
@@ -679,7 +679,7 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     }
 
     // spinnerOnTouch(): Captures the touch events for mapSpinner and is primarily used to play the
-    // 'dq_select' sound effect when the spinner is pressed. This is a workaround for onClick events
+    // 'lttm_select' sound effect when the spinner is pressed. This is a workaround for onClick events
     // for spinners, as spinner objects do not support onClick events natively.
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
 
