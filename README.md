@@ -4,9 +4,9 @@ Link to the Map
 Developer: huhx0015
 
 ### LINK TO THE MAP
-![suikocartography_preview](https://cloud.githubusercontent.com/assets/1645482/15938651/ec249e76-2e28-11e6-9e5e-94a53f759655.gif)
+![linktothemap_preview](https://cloud.githubusercontent.com/assets/1645482/16185724/d53f8798-367a-11e6-9262-59d6208e08bc.gif)
 
-## Status: DISCONTINUED
+#### Status: DISCONTINUED
 
 ## Description
 
@@ -22,12 +22,11 @@ Link to the Map utilizes a custom-built map engine, which is also utilized in Dr
 
 ### Map
 
-* The Video Game Atlas: http://vgmaps.com/Atlas/PSX/Suikoden-World.png
-* World Map Ripped By: mechaskrom@gmail.com
+* Ian-Albert.com: http://ian-albert.com/games/legend_of_zelda_a_link_to_the_past_maps/
 
 ### Sprites
 
-* The Spriter's Resource: http://www.spriters-resource.com/playstation/suikoden/
+* The Spriter's Resource: http://www.spriters-resource.com/snes/legendofzeldaalinktothepast/
 
 ## Copyright
 
