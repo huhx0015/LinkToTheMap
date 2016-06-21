@@ -1,7 +1,7 @@
 Link to the Map
 =================
 
-Developer: huhx0015
+DEVELOPER: huhx0015
 
 ### LINK TO THE MAP
 ![linktothemap_preview](https://cloud.githubusercontent.com/assets/1645482/16185724/d53f8798-367a-11e6-9262-59d6208e08bc.gif)
