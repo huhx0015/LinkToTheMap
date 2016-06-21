@@ -10,10 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 /** -----------------------------------------------------------------------------------------------
- *  [DQImages] CLASS
+ *  [LTTMImages] CLASS
  *  PROGRAMMER: Huh X0015
- *  DESCRIPTION: DQImages class is used to provide advanced image decoding and loading functionality
- *  for all activity classes.
+ *  DESCRIPTION: LTTMImages class is used to provide advanced image decoding and loading
+ *  functionality for all activity classes.
  *  -----------------------------------------------------------------------------------------------
  */
 
@@ -25,22 +25,6 @@ public class LTTMImages {
     private static final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
 
     /** IMAGE FUNCTIONALITY ____________________________________________________________________ **/
-
-    // fixBackgroundRepeat(): This function is only used to fix a bug that is present in Android 3.0
-    // and below where a Bitmap may lose it's tileMode properties. This function is originally from
-    // StackOverflow: http://stackoverflow.com/questions/4077487/background-image-not-repeating-in-android-layout
-    public static void fixBackgroundRepeat(View view) {
-
-        Drawable background = view.getBackground(); // Retrieves the background of the View.
-
-        if (background != null) {
-            if (background instanceof BitmapDrawable) {
-                BitmapDrawable bmp = (BitmapDrawable) background; // Creates a new BitmapDrawable instance.
-                bmp.mutate(); // Makes sure the state isn't being shared anymore.
-                bmp.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT); // Sets the tile mode.
-            }
-        }
-    }
 
     // getImageDimensions(): Retrieves the image's width and height properties.
     public static Point getImageDimensions(Resources res, int mapId) {

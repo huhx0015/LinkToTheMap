@@ -26,14 +26,6 @@ public class LTTMSprites {
     public int treasureNameHD; // Stores the reference ID of the 1080p version of the treasure icon (closed).
     public int treasureNameOpenHD; // Stores the reference ID of the 1080p version of the treasure icon (opened).
 
-    // LTTMOptions Fragment Sprites:
-    public int graphicsSprite; // Stores the reference ID of the graphics sprite.
-    public int graphicsSpriteDisabled; // Stores the reference ID of the disabled graphics sprite.
-    public int labelSprite; // Stores the reference ID of the label sprite.
-    public int musicSprite; // Stores the reference ID of the music sprite.
-    public int musicSpriteDisabled; // Stores the reference ID of the disabled music sprite.
-    public int soundSprite; // Stores the reference ID of the sound sprite.
-
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
     // LTTMSprites(): Constructor for the LTTMSprites class.

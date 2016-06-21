@@ -75,11 +75,6 @@ public class LTTMPreferences {
         return preferences.getString("lttp_language", "English"); // Retrieves the current language setting.
     }
 
-    // getLowMemory(): Retrieves the "lttp_low_ram" value from preferences.
-    public static Boolean getLowMemory(SharedPreferences preferences) {
-        return preferences.getBoolean("lttp_low_ram", false); // Retrieves the Android low RAM device value.
-    }
-
     // getMapReload(): Retrieves the "lttp_map_reload" value from preferences.
     public static Boolean getMapReload(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_map_reload", true); // Retrieves the map reload setting.
