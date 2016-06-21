@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/loz_lttp_menu_background"
-    android:id="@+id/dg_world_spinner_layout"
+    android:id="@+id/lttm_world_spinner_layout"
     style="@style/spinnerDropDownItemStyle">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dq_world_spinner_icon"
+        android:id="@+id/lttm_world_spinner_icon"
         android:layout_gravity="center"
         android:paddingLeft="5dp"
         android:scaleType="fitCenter" />
@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dg_world_spinner_choice"
+        android:id="@+id/lttm_world_spinner_choice"
         android:typeface="sans"
         android:textSize="20sp"
         android:textColor="#ffffff"

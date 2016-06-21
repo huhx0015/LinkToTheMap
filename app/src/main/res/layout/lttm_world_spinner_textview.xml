@@ -1,5 +1,5 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dq_world_spinner_text"
+    android:id="@+id/lttm_world_spinner_text"
     style="@style/spinnerItemStyle"
     android:textColor="#ffffff"
     android:textSize="25sp"

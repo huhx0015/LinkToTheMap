@@ -54,14 +54,14 @@ public class LTTMMenus {
                 View worldSpinnerDrop = inflater.inflate(R.layout.lttm_world_spinner, parent, false);
 
                 // Decodes the mapIcon ImageView object for memory optimization purposes.
-                ImageView mapIcon = (ImageView) worldSpinnerDrop.findViewById(R.id.dq_world_spinner_icon);
+                ImageView mapIcon = (ImageView) worldSpinnerDrop.findViewById(R.id.lttm_world_spinner_icon);
                 Picasso.with(con.getApplicationContext())
                         .load(R.drawable.loz_alttp_map_icon)
                         .withOptions(LTTMImages.setBitmapOptions())
                         .into(mapIcon);
 
                 // Sets up the custom font attributes for the spinner's drop down list.
-                TextView mapChoice = (TextView) worldSpinnerDrop.findViewById(R.id.dg_world_spinner_choice);
+                TextView mapChoice = (TextView) worldSpinnerDrop.findViewById(R.id.lttm_world_spinner_choice);
                 mapChoice.setTypeface(spinnerFont);
                 mapChoice.setText(maps[position]);
 

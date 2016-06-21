@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -114,10 +113,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     private final int RESULT_CLOSE_ALL = 1; // Used for startActivityForResult activity termination.
     private Point displayDimen = new Point(); // Used for determining the device's display resolution.
 
-    // THREAD VARIABLES
-    private Handler mapBackgroundHandler = new Handler(); // Thread for handling background animation.
-    private int mapBGID = 0; // Used for alternating the map background tiles.
-
     // VIEW INJECTION VARIABLES
     @Bind(android.R.id.content) View worldView;
     @Bind(R.id.lttp_map_bar_bottom) FrameLayout bottomDisplay;
@@ -164,7 +159,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         setContentView(R.layout.lttm_world_view); // Sets the XML layout file.
         ButterKnife.bind(this); // ButterKnife view injection initialization.
 
-
         // IMAGEVIEW INITIALIZATION:
         lttm_maps.getInstance().initializeLTTM(); // Initializes the lttm_maps class variable.
         clearMap(); // Assigns all map-related ImageViews to blank map images.
@@ -198,13 +192,10 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         // If the activity is resumed from an onPause() event, this sets the mapSpinner to the map
         // that was previously set before entering into onPause(). This is done to prevent the
         // mapSpinner from loading the first map on the mapList.
-        if (pauseOn == true) {
+        if (pauseOn) {
 
             spinner_choice = LTTMPreferences.getCurrentWorld(LTTM_temps); // Retrieves the saved spinner position.
             mapSpinner.setSelection(spinner_choice); // Sets the mapSpinner position to it's previous position.
-
-            // If the map background is animated, the thread for handling the map background is resumed.
-            if (lttm_maps.getInstance().animatedBG) { startStopThreads(true); } // Stops all threads
 
             // Resumes song where it left off before entering into onPause().
             lttm_sounds.getInstance().playMapSong(currentSong); // Plays the menu song for WorldView.
@@ -237,9 +228,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
             // Refreshes the SoundPool object for Android 2.3 (GINGERBREAD) devices.
             LTTMSounds.getInstance().reinitializeSoundPool();
 
-            // If the map background is animated, the thread for handling the map background is stopped.
-            if (lttm_maps.getInstance().animatedBG) { startStopThreads(false); } // Stops all threads
-
             pauseOn = true; // Used to indicate that the current activity has entered into an onPause() state.
         }
     }
@@ -249,8 +237,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        mapBackgroundHandler.removeCallbacks(mapBackgroundThread); // Stops the map background thread.
 
         // Recycles all View objects to free up memory resources.
         LTTMMemory.recycleMemory(findViewById(R.id.world_view_layout), this);
@@ -382,7 +368,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         // Makes the mapUnderlay layer visible.
         locationUnderlay.setVisibility(View.VISIBLE);
         mapUnderlay.setBackgroundResource(lttm_maps.getInstance().mapUnderlayImage);
-        startMapBackground((lttm_maps.getInstance().animatedBG));
         mapUnderlay.setVisibility(View.VISIBLE);
     }
 
@@ -570,7 +555,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         }
 
         else if (language.equals("Japanese")) { mapTitle.setTextSize(17); }
-
     }
 
     /** USER INTERFACE FUNCTIONALITY ___________________________________________________________ **/
@@ -1011,19 +995,25 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
                     public void onPrepareLoad(Drawable placeHolderDrawable) {}
                 };
 
-                if (mapName.equals("Light World")) {
-                    Picasso.with(this)
-                            .load(R.drawable.loz_alttp_light_world_underlay)
-                            .into(target);
-                    floorMapButtonLayout.setVisibility(View.GONE);
-                } else if (mapName.equals("Dark World")) {
-                    Picasso.with(this)
-                            .load(R.drawable.loz_alttp_dark_world_underlay)
-                            .into(target);
-                    floorMapButtonLayout.setVisibility(View.GONE);
-                } else {
-                    locationUnderlay.setImageDrawable(null);
-                    floorMapButtonLayout.setVisibility(View.VISIBLE);
+                switch (mapName) {
+                    case "Light World":
+                        Picasso.with(this)
+                                .load(R.drawable.loz_alttp_light_world_underlay)
+                                .into(target);
+                        floorMapButtonLayout.setVisibility(View.GONE);
+                        break;
+
+                    case "Dark World":
+                        Picasso.with(this)
+                                .load(R.drawable.loz_alttp_dark_world_underlay)
+                                .into(target);
+                        floorMapButtonLayout.setVisibility(View.GONE);
+                        break;
+
+                    default:
+                        locationUnderlay.setImageDrawable(null);
+                        floorMapButtonLayout.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
         }
@@ -1038,7 +1028,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         // Prepares the loading screen prior to loading the new map.
         clearMap(); // Sets the map resources to blank images to free up memory resources.
         displayLoadingScreen(); // Displays the loading screen objects.
-        mapBackgroundHandler.removeCallbacks(mapBackgroundThread); // Stops the map background thread.
         mapTitle.setText(mapName); // Sets the map name for the top bar.
         lttm_maps.getInstance().mapSelector(mapName); // Retrieves the selected map from mapSelector in lttm_maps.
 
@@ -1146,82 +1135,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         lttm_sounds.getInstance().musicOn = LTTMPreferences.getMusicOn(LTTM_prefs);
         lttm_sounds.getInstance().soundOn = LTTMPreferences.getSoundOn(LTTM_prefs);
         lttm_sounds.getInstance().songPosition = 0; // Required to avoid audio resume playback bug.
-    }
-
-    /** THREAD FUNCTIONALITY ___________________________________________________________________ **/
-
-    // mapBackgroundThread(): A threaded function which alternates the map background resources based
-    // on the BGTimer value.
-    private Runnable mapBackgroundThread = new Runnable() {
-
-        public void run() {
-
-            // The map background animation is only set if the animatedBG property is ensured.
-            if (lttm_maps.getInstance().animatedBG) {
-
-                // Retrieves the number of map underlay image resources in the LinkedList object.
-                int mapUnderlayImageSetCount = lttm_maps.getInstance().mapUnderlayImageSet.size();
-
-                // If the mapBGID is greater than the mapUnderlayImageSetCount, it indicates that the
-                // maximum map underlay image frame has been reached.
-                if (mapBGID >= mapUnderlayImageSetCount) { mapBGID = 0; } // Resets the mapBGID value to 0.
-
-                // Retrieves the map underlay image resource and sets the map background, based on the current
-                // value of mapBGID.
-                try {
-
-                    // Sets the updated map underlay resource.
-                    runOnUiThread(new Runnable() {
-
-                        public void run() {
-                            mapUnderlay.setBackgroundResource(lttm_maps.getInstance().mapUnderlayImageSet.get(mapBGID));
-                        }
-                    });
-
-                    // If the current device uses Android 3.0 and below, fixBackgroundRepeat function is called
-                    // to fix the tileMode bug.
-                    if (api_level < 14) {
-                        LTTMImages.fixBackgroundRepeat(findViewById(R.id.world_map_underlay));
-                    }
-                }
-
-                // ArrayIndexOutOfBoundsException handler.
-                catch (ArrayIndexOutOfBoundsException e) {
-                    e.printStackTrace(); // Prints error message.
-                    String errorString = "LTTMWORLDVIEW ACTIVITY\nARRAY INDEX OUT OF BOUNDS WHILE ANIMATING MAP BACKGROUND!";
-                    prepareError(errorString); // Prepares the error handling.
-                }
-                mapBGID++; // Increments the mapBGID counter.
-
-                mapBackgroundHandler.postDelayed(this, lttm_maps.getInstance().BGTimer); // Updates the thread per BGTimer value.
-            }
-        }
-    };
-
-    // startMapBackground(): This function is responsible for starting the map background thread if
-    // the currently displayed map has an animated background.
-    private void startMapBackground(boolean isAnimate) {
-
-        mapBGID = 0; // Resets the mapBGID value.
-        mapBackgroundHandler.removeCallbacks(mapBackgroundThread); // Stops the map background thread.
-
-        // Begins the map background thread if the current map has an animated background.
-        if (isAnimate) {
-            mapBackgroundHandler.postDelayed(mapBackgroundThread, lttm_maps.getInstance().BGTimer); // Updates the thread per BGTimer value.
-        }
-
-        // Sets the map background image resource.
-        else { mapUnderlay.setBackgroundResource(lttm_maps.getInstance().mapUnderlayImage); }
-    }
-
-    // startStopThreads(): Resumes or stops all threads.
-    private void startStopThreads(boolean isStart) {
-
-        // Starts all threads.
-        if (isStart) { mapBackgroundHandler.postDelayed(mapBackgroundThread, lttm_maps.getInstance().BGTimer); }
-
-        // Stops all threads.
-        else { mapBackgroundHandler.removeCallbacks(mapBackgroundThread); }
     }
 
     /** ADDITIONAL FUNCTIONALITY _______________________________________________________________ **/
