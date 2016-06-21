@@ -1,6 +1,7 @@
 package com.ycorner.linktothemap.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -9,7 +10,6 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -56,7 +56,7 @@ import java.lang.String;
  *  -----------------------------------------------------------------------------------------------
  */
 
-public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTouchListener,
+public class LTTMWorldViewActivity extends Activity implements View.OnTouchListener,
         AdapterView.OnItemSelectedListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
@@ -80,7 +80,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     private final PointF mid = new PointF(); // Used for calculating DRAG and ZOOM onTouch events.
 
     // LAYOUT VARIABLES
-    private boolean showFragment = false; // Used to determine if the fragment object is displayed or not.
     private int loadingName; // Stores the reference ID for the loading, menu, search, and treasure box images.
 
     // MAP VARIABLES
@@ -116,23 +115,16 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     // VIEW INJECTION VARIABLES
     @Bind(android.R.id.content) View worldView;
     @Bind(R.id.lttp_map_bar_bottom) FrameLayout bottomDisplay;
-    @Bind(R.id.lttp_fragment_container) FrameLayout fragmentDisplay;
     @Bind(R.id.lttp_loading_display) FrameLayout loadingDisplay;
     @Bind(R.id.lttp_map_search_spinner_container) LinearLayout spinnerLayout;
-    @Bind(R.id.lttp_equipment_icon) ImageButton equipmentButton;
     @Bind(R.id.lttp_map_icon) ImageButton mapButton;
     @Bind(R.id.lttp_map_search_icon) ImageButton globeButton;
-    @Bind(R.id.lttp_inn_icon) ImageButton innButton;
-    @Bind(R.id.lttp_item_icon) ImageButton itemButton;
-    @Bind(R.id.lttp_travel_door_icon) ImageButton travelButton;
-    @Bind(R.id.lttp_treasure_icon) ImageButton treasureButton;
     @Bind(R.id.lttp_loading_background) ImageView loadingBackground;
     @Bind(R.id.world_map_view) ImageView mapView;
     @Bind(R.id.world_map_overlay) ImageView mapOverlay;
     @Bind(R.id.world_map_underlay) ImageView mapUnderlay;
     @Bind(R.id.map_location_underlay) ImageView locationUnderlay;
     @Bind(R.id.lttp_map_bar_2_layer) LinearLayout topDisplayRow_2;
-    @Bind(R.id.lttp_map_bar_3_layer) LinearLayout topDisplayRow_3;
     @Bind(R.id.lttp_map_spinner) Spinner mapSpinner;
     @Bind(R.id.lttp_map_bar_top) TableLayout topDisplay;
     @Bind(R.id.lttp_map_name) TextView mapTitle;
@@ -264,14 +256,9 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         super.onConfigurationChanged(newConfig);
 
         updateDisplayLayout(); // Updates the screen resolution attributes.
-        fragmentDisplay.removeAllViews(); // Removes all views from the fragment container.
         spinnerOrientation(); // Updates the mapSpinner's layout parameters based on current device orientation.
         loadMapMatrix(); // Updates the map matrix with the new screen resolution values.
         updateMapTextSize();  // The mapTitle TextView object's font size is adjusted for layout formatting.
-
-        // If the fragment was in focus prior to the screen orientation change, the fragment is
-        // re-set to being in focus.
-        if (showFragment == true) { displayFragment(false); }
     }
 
     /** PHYSICAL BUTTON FUNCTIONALITY __________________________________________________________ **/
@@ -283,11 +270,8 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
 
         lttm_sounds.getInstance().playSoundEffect(1); // Plays the "lttm_menu" sound effect.
 
-        // If the LTTMOptions fragment is currently being displayed, the back button hides the fragment.
-        if (showFragment) { displayFragment(showFragment); } // Hides the LTTMOptions fragment.
-
         // Loads the parent map if one exists. Otherwise, the activity is concluded.
-        else { returnToWorld(lttm_maps.getInstance().parentMap); }
+        returnToWorld(lttm_maps.getInstance().parentMap);
     }
 
     // onKeyDown(): When a user presses the menu key, it displays the menu dialog.
@@ -318,10 +302,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         mapOverlay.setVisibility(View.INVISIBLE); // Makes the mapUnderlay object invisible.
         bottomDisplay.setVisibility(View.INVISIBLE); // Hides the zoom buttons.
         topDisplayRow_2.setVisibility(View.INVISIBLE); // Hides the additional buttons.
-        topDisplayRow_3.setVisibility(View.INVISIBLE); // Hides the display windows.
-
-        // Hides the fragment object, if currently being displayed.
-        if (showFragment) { fragmentDisplay.setVisibility(View.INVISIBLE); }
 
         // If the device is in landscape mode, the top display will be hidden, as it overlaps with
         // the loading screen background.
@@ -344,10 +324,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
         bottomDisplay.setVisibility(View.VISIBLE); // Makes the bottom display visible.
         topDisplay.setVisibility(View.VISIBLE); // Makes the top display visible.
         topDisplayRow_2.setVisibility(View.VISIBLE); // Hides the additional buttons.
-        topDisplayRow_3.setVisibility(View.VISIBLE); // Hides the display windows.
-
-        // Makes the fragment object visible, if it was displayed earlier before the loading screen.
-        if (showFragment) { fragmentDisplay.setVisibility(View.VISIBLE); }
 
         // Loads the map overlay image. If the map is larger than 2048 x 2048 and LOW GRAPHICS mode
         // has been enabled, the map overlay image is scaled down.
@@ -425,39 +401,19 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
                 loadingBackground.setLayoutParams(loadingSize);
             }
 
-            // Retrieves the layout parameters for each cursor.
-            ViewGroup.LayoutParams equipButtonParams = equipmentButton.getLayoutParams();
-            ViewGroup.LayoutParams innButtonParams = innButton.getLayoutParams();
-            ViewGroup.LayoutParams itemButtonParams = itemButton.getLayoutParams();
+            // Retrieves the layout parameters for each layout.
             ViewGroup.LayoutParams mapButtonParams = mapButton.getLayoutParams();
             ViewGroup.LayoutParams globeButtonParams = globeButton.getLayoutParams();
-            ViewGroup.LayoutParams travelButtonParams = travelButton.getLayoutParams();
-            ViewGroup.LayoutParams treasureButtonParams = treasureButton.getLayoutParams();
 
-            // Sets the new dimensions for the cursors.
-            equipButtonParams.width = scaleValue;
-            equipButtonParams.height = scaleValue;
-            innButtonParams.width = scaleValue;
-            innButtonParams.height = scaleValue;
-            itemButtonParams.width = scaleValue;
-            itemButtonParams.height = scaleValue;
+            // Sets the new dimensions for the layouts.
             mapButtonParams.width = scaleValue;
             mapButtonParams.height = scaleValue;
             globeButtonParams.width = scaleValue;
             globeButtonParams.height = scaleValue;
-            travelButtonParams.width = scaleValue;
-            travelButtonParams.height = scaleValue;
-            treasureButtonParams.width = scaleValue;
-            treasureButtonParams.height = scaleValue;
 
-            // Sets the new parameters for each cursor.
-            equipmentButton.setLayoutParams(equipButtonParams);
-            innButton.setLayoutParams(innButtonParams);
-            itemButton.setLayoutParams(itemButtonParams);
+            // Sets the new parameters for each layout.
             mapButton.setLayoutParams(mapButtonParams);
             globeButton.setLayoutParams(globeButtonParams);
-            travelButton.setLayoutParams(travelButtonParams);
-            treasureButton.setLayoutParams(treasureButtonParams);
         }
 
         // 480p - 800p: If the device's display size is 480p or greater and is less than 1080p, the icon sizes are downscaled.
@@ -558,24 +514,6 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     }
 
     /** USER INTERFACE FUNCTIONALITY ___________________________________________________________ **/
-
-    // displayFragment(): Displays/hides the LTTMOptions fragment object.
-    private void displayFragment(boolean isShow) {
-
-        // If the fragment is currently being displayed, the fragment is hidden.
-        if (isShow) {
-            fragmentDisplay.setVisibility(View.INVISIBLE); // Hides the fragment.
-            showFragment = false; // Indicates that the fragment is hidden.
-            noTouch = false; // Indicates that the user can move the map and interact with the activity buttons.
-        }
-
-        // If the fragment is currently hidden, the fragment is displayed.
-        else {
-            fragmentDisplay.setVisibility(View.VISIBLE); // Displays the fragment.
-            showFragment = true; // Indicates that the fragment is currently being displayed.
-            noTouch = true; // Indicates that the user cannot move the map and interact with the activity buttons.
-        }
-    }
 
     // setUpButtons(): Sets up listeners for the menu, search, and zoom buttons, as well as actions
     // to perform when pressed.
@@ -711,8 +649,7 @@ public class LTTMWorldViewActivity extends FragmentActivity implements View.OnTo
     // onNothingSelected(): Override function for setOnTouchListener for the mapSpinner object.
     // Nothing occurs when no map is selected from the mapSpinner object.
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     /** GESTURE FUNCTIONALITY __________________________________________________________________ **/
 
