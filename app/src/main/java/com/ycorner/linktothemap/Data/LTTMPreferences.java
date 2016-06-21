@@ -2,8 +2,6 @@ package com.ycorner.linktothemap.Data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import com.ycorner.linktothemap.R;
 
 /** -----------------------------------------------------------------------------------------------
  *  [LTTMPreferences] CLASS
@@ -16,31 +14,9 @@ public class LTTMPreferences {
 
     /** SHARED PREFERENCES FUNCTIONALITY _______________________________________________________ **/
 
-    // getPreferenceResource(): Selects the appropriate resource based on the shared preference type.
-    private static int getPreferenceResource(String prefType) {
-
-        if (prefType.equals("lttp_temps")) { return R.xml.lttm_temps; } // Temporary preferences resource file.
-        else { return R.xml.lttm_options; } // Main preferences resource file.
-    }
-
     // initializePreferences(): Initializes and returns the SharedPreferences object.
     public static SharedPreferences initializePreferences(String prefType, Context context) {
         return context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
-    }
-
-    // setDefaultPreferences(): Sets the shared preference values to default values.
-    public static void setDefaultPreferences(String prefType, Boolean isReset, Context context) {
-
-        int prefResource = getPreferenceResource(prefType); // Determines the appropriate resource file to use.
-
-        // Resets the preference values to default values.
-        if (isReset) {
-            SharedPreferences preferences = initializePreferences(prefType, context);
-            preferences.edit().clear().apply();
-        }
-
-        // Sets the default values for the SharedPreferences object.
-        PreferenceManager.setDefaultValues(context, prefType, Context.MODE_PRIVATE, prefResource, true);
     }
 
     /** GET PREFERENCES FUNCTIONALITY __________________________________________________________ **/
@@ -60,19 +36,9 @@ public class LTTMPreferences {
         return preferences.getInt("lttp_graphics_mode", 2); // Retrieves the graphics mode setting.
     }
 
-    // getInitialLaunch(): Retrieves the "lttp_initial_launch" value from preferences.
-    public static Boolean getInitialLaunch(SharedPreferences preferences) {
-        return preferences.getBoolean("lttp_initial_launch", true); // Retrieves the initial application launch value.
-    }
-
     // getLabelOn(): Retrieves the "lttp_overlay_on" value from preferences.
     public static Boolean getLabelOn(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_overlay_on", false); // Retrieves the label mode setting.
-    }
-
-    // getLanguage(): Retrieves the "lttp_language" value from preferences.
-    public static String getLanguage(SharedPreferences preferences) {
-        return preferences.getString("lttp_language", "English"); // Retrieves the current language setting.
     }
 
     // getMapReload(): Retrieves the "lttp_map_reload" value from preferences.
@@ -88,16 +54,6 @@ public class LTTMPreferences {
     // getMusicOn(): Retrieves the "lttp_music_on" value from preferences.
     public static Boolean getMusicOn(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_music_on", true); // Retrieves the music option setting.
-    }
-
-    // getMusicVersion(): Retrieves the "lttp_musicVersion" value from preferences.
-    public static int getMusicVersion(SharedPreferences preferences) {
-        return preferences.getInt("lttp_musicVersion", 0); // Retrieves the music pack version.
-    }
-
-    // getReturnCall(): Retrieves the "lttp_return_call" value from preferences.
-    public static Boolean getReturnCall(SharedPreferences preferences) {
-        return preferences.getBoolean("lttp_return_call", false); // Retrieves the return call setting.
     }
 
     // getSelectedGame(): Retrieves the "lttp_selected_game" value from preferences.
@@ -143,7 +99,7 @@ public class LTTMPreferences {
     }
 
     // setErrorMode(): Sets the "lttp_error" value to preferences.
-    public static void setErrorMode(Boolean mode, SharedPreferences preferences) {
+    public static void setErrorMode(boolean mode, SharedPreferences preferences) {
 
         // Prepares the SharedPreferences object for editing.
         SharedPreferences.Editor prefEdit = preferences.edit();
@@ -153,7 +109,7 @@ public class LTTMPreferences {
     }
 
     // setMapReload(): Sets the "lttp_map_reload" value to preferences.
-    public static void setMapReload(Boolean isReload, SharedPreferences preferences) {
+    public static void setMapReload(boolean isReload, SharedPreferences preferences) {
 
         // Prepares the SharedPreferences object for editing.
         SharedPreferences.Editor prefEdit = preferences.edit();
@@ -163,7 +119,7 @@ public class LTTMPreferences {
     }
 
     // setMatrixRecalculate(): Sets the "lttp_matrix_recalculate" value to preferences.
-    public static void setMatrixRecalculate(Boolean isRecalculate, SharedPreferences preferences) {
+    public static void setMatrixRecalculate(boolean isRecalculate, SharedPreferences preferences) {
 
         // Prepares the SharedPreferences object for editing.
         SharedPreferences.Editor prefEdit = preferences.edit();
@@ -173,7 +129,7 @@ public class LTTMPreferences {
     }
 
     // setReturnCall(): Sets the "lttp_return_call" value to preferences.
-    public static void setReturnCall(Boolean isReturn, SharedPreferences preferences) {
+    public static void setReturnCall(boolean isReturn, SharedPreferences preferences) {
 
         // Prepares the SharedPreferences object for editing.
         SharedPreferences.Editor prefEdit = preferences.edit();
@@ -203,7 +159,7 @@ public class LTTMPreferences {
     }
 
     // setWorldView(): Sets the "lttp_worldview_on" value to preferences.
-    public static void setWorldView(Boolean worldViewOn, SharedPreferences preferences) {
+    public static void setWorldView(boolean worldViewOn, SharedPreferences preferences) {
 
         // Prepares the SharedPreferences object for editing.
         SharedPreferences.Editor prefEdit = preferences.edit();

@@ -33,7 +33,7 @@ public class LTTMMenus {
 
     // createMapSpinner(): Sets up the custom layout for the spinner dropdown object.
     @SuppressLint("NewApi")
-    public void createMapSpinner(final Context con, Spinner spin, final String maps[], final String language) {
+    public void createMapSpinner(final Context con, Spinner spin, final String maps[]) {
 
         final Typeface spinnerFont = LTTMFont.getInstance(con).getTypeFace();
 
@@ -64,11 +64,7 @@ public class LTTMMenus {
                 TextView mapChoice = (TextView) worldSpinnerDrop.findViewById(R.id.lttm_world_spinner_choice);
                 mapChoice.setTypeface(spinnerFont);
                 mapChoice.setText(maps[position]);
-
-                // Based on the current language settings, the font size is adjusted for layout
-                // formatting.
-                if (language.equals("English")) { mapChoice.setTextSize(20); } // Sets the font size to 20sp.
-                else if (language.equals("Japanese")) { mapChoice.setTextSize(17); } // Sets the font size to 17sp.
+                mapChoice.setTextSize(20); // Sets the font size to 20sp.
 
                 return worldSpinnerDrop;
             }
@@ -84,7 +80,7 @@ public class LTTMMenus {
 
     // setMapList(): Sets up the list of maps for the spinner, based on the selected game and
     // current language settings.
-    public String[] setMapList(Context con, String spinnerList, String language) {
+    public String[] setMapList(Context con, String spinnerList) {
 
         String[] mapList = new String[0]; // Stores the string array list map values.
 
@@ -92,12 +88,7 @@ public class LTTMMenus {
         if (spinnerList.equals("loz_alttp")) {
 
             // Retrieves map list array from defined XML.
-            if (language.equals("English")) {
-                mapList = con.getResources().getStringArray(R.array.loz_alttp_list);
-            }
-            else if (language.equals("Japanese")) {
-                mapList = con.getResources().getStringArray(R.array.loz_alttp_list);
-            }
+            mapList = con.getResources().getStringArray(R.array.loz_alttp_list);
         }
 
         return mapList;

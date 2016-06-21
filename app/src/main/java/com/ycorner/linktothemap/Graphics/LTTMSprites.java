@@ -57,7 +57,7 @@ public class LTTMSprites {
     /** SPRITE FUNCTIONALITY ___________________________________________________________________ **/
 
     // loadGameSprites(): Loads the game sprite resources based on the selected game and language.
-    public void loadGameSprites(String gameName, String language) {
+    public void loadGameSprites(String gameName) {
 
         // LTTMWorldView Sprites: Sets the loading screen and sprites for the LTTMWorldView activity.
         if (gameName.equals("loz_alttp")) {

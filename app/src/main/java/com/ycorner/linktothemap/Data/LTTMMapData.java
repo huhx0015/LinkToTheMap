@@ -26,7 +26,6 @@ public class LTTMMapData {
     public int parentID; // Stores the spinner position of the parent map.
     public LinkedList<Integer> mapUnderlayImageSet; // Stores the list of map underlay resources.
     public String gameName; // Stores the name of the current game.
-    public String mapLanguage; // Stores the language value to determine which map overlay to use.
     public String mapSong; // Stores the name of the song that corresponds with the map.
     public String mapType; // Stores the type of map that corresponds with the current map.
     public String parentMap; // Stores the name of the parent map.
@@ -56,7 +55,6 @@ public class LTTMMapData {
         gameName = "loz_alttp";
         graphicsMode = 2;
         labelsOn = true;
-        mapLanguage = "English";
         mapSong = "";
         mapOverlayImage = R.drawable.lttm_transparent_tile;
         mapViewImage = R.drawable.lttm_transparent_tile;

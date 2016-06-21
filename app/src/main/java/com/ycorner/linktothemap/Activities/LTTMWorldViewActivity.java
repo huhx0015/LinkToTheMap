@@ -104,7 +104,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     private int spinner_choice; // Used for saving the position of the spinner.
     private static final String LTTM_OPTIONS = "lttp_options"; // String name for the shared preferences object.
     private static final String LTTM_TEMPS = "lttp_temps"; // String name for the temporary preferences object.
-    private String language; // Used for determining the application's language settings.
 
     // SYSTEM VARIABLES
     private final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
@@ -353,7 +352,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         // SPRITE VARIABLES:
         LTTMSprites gameSprites = null; // LTTMSprite object that stores the sprite resources.
         gameSprites.getInstance().initializeLTTM(); // Initializes the LTTMSprite object.
-        gameSprites.getInstance().loadGameSprites(game, language); // Loads the sprite resources based on the selected game and language.
+        gameSprites.getInstance().loadGameSprites(game); // Loads the sprite resources based on the selected game and language.
 
         // RESOURCE VARIABLES:
         loadingName = gameSprites.getInstance().loadingName; // Stores the reference ID of the loading screen.
@@ -497,20 +496,14 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     // the device's display size and current screen orientation.
     private void updateMapTextSize() {
 
-        // Based on the current language settings, the map title's font size is adjusted for layout formatting.
-        if (language.equals("English")) {
-
-            // 540p: If the device's display size is 540p and is in portrait mode, the map title
-            // TextView font size is adjusted.
-            if ( (currentOrientation == 0) && (displaySize >= 540) && (displaySize < 552) ) {
-                mapTitle.setTextSize(15);
-            }
-
-            // 240p - 480p, 600p - 1440p:
-            else { mapTitle.setTextSize(20); }
+        // 540p: If the device's display size is 540p and is in portrait mode, the map title
+        // TextView font size is adjusted.
+        if ( (currentOrientation == 0) && (displaySize >= 540) && (displaySize < 552) ) {
+            mapTitle.setTextSize(15);
         }
 
-        else if (language.equals("Japanese")) { mapTitle.setTextSize(17); }
+        // 240p - 480p, 600p - 1440p:
+        else { mapTitle.setTextSize(20); }
     }
 
     /** USER INTERFACE FUNCTIONALITY ___________________________________________________________ **/
@@ -593,8 +586,8 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     // setUSpinner(): Sets up the map spinner list for the map selection menu.
     private void setUpSpinner(boolean isResume) {
 
-        String[] mapList = lttm_menus.setMapList(this, lttm_maps.getInstance().gameName, language); // Sets up the lists for the mapSpinner object.
-        lttm_menus.createMapSpinner(this, mapSpinner, mapList, language); // Creates a customized spinner for mapSpinner.
+        String[] mapList = lttm_menus.setMapList(this, lttm_maps.getInstance().gameName); // Sets up the lists for the mapSpinner object.
+        lttm_menus.createMapSpinner(this, mapSpinner, mapList); // Creates a customized spinner for mapSpinner.
         if (isResume) { mapSpinner.setSelection(spinner_choice); } // Sets the mapSpinner position to it's previous position.
         mapSpinner.setOnItemSelectedListener(this); // Sets a listener to the mapSpinner object.
         mapSpinner.setOnTouchListener(spinnerOnTouch); // Sets up an onClick-like event for the mapSpinner object.
@@ -1055,7 +1048,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
         // PREFERENCES:
         LTTM_prefs = LTTMPreferences.initializePreferences(LTTM_OPTIONS, this); // Shared preferences object.
-        language = LTTMPreferences.getLanguage(LTTM_prefs); // LANGUAGE setting.
 
         // TEMPORARY PREFERENCES:
         LTTM_temps = LTTMPreferences.initializePreferences(LTTM_TEMPS, this); // Temporary preferences object.
@@ -1067,7 +1059,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         // Assigns the shared preference values to the lttm_maps & lttm_sounds class variables.
         lttm_maps.getInstance().gameName = LTTMPreferences.getSelectedGame(LTTM_temps);
         lttm_maps.getInstance().graphicsMode = LTTMPreferences.getGraphicsMode(LTTM_prefs);
-        lttm_maps.getInstance().mapLanguage = LTTMPreferences.getLanguage(LTTM_prefs);
         lttm_maps.getInstance().labelsOn = LTTMPreferences.getLabelOn(LTTM_prefs);
         lttm_sounds.getInstance().musicOn = LTTMPreferences.getMusicOn(LTTM_prefs);
         lttm_sounds.getInstance().soundOn = LTTMPreferences.getSoundOn(LTTM_prefs);
