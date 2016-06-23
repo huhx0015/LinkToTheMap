@@ -1,41 +1,41 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="TEMPS"
-        android:key="dq_temps">
+        android:key="lttm_temps">
         <EditTextPreference
-            android:key="dq_current_song"
+            android:key="lttm_current_song"
             android:title="CURRENT SONG"
             android:defaultValue="STOPPED"/>
         <CheckBoxPreference
-            android:key="dq_download_mode"
+            android:key="lttm_download_mode"
             android:title="DOWNLOAD MODE"
             android:defaultValue="false"/>
         <EditTextPreference
-            android:key="dq_error"
+            android:key="lttm_error"
             android:title="ERROR CODE"
             android:defaultValue="NULL"/>
         <CheckBoxPreference
-            android:key="dq_error_mode"
+            android:key="lttm_error_mode"
             android:title="ERROR MODE"
             android:defaultValue="false"/>
         <CheckBoxPreference
-            android:key="dq_map_reload"
+            android:key="lttm_map_reload"
             android:title="MAP RELOAD"
             android:defaultValue="false" />
         <CheckBoxPreference
-            android:key="dq_matrix_recalculate"
+            android:key="lttm_matrix_recalculate"
             android:title="MATRIX RECALCULATE"
             android:defaultValue="false" />
         <CheckBoxPreference
-            android:key="dq_return_call"
+            android:key="lttm_return_call"
             android:title="RETURN CALL"
             android:defaultValue="false" />
         <EditTextPreference
-            android:key="dq_selected_game"
+            android:key="lttm_selected_game"
             android:title="SELECTED GAME"
-            android:defaultValue="dq1_nes"/>
+            android:defaultValue="lttm1_nes"/>
         <CheckBoxPreference
-            android:key="dq_worldview_on"
+            android:key="lttm_worldview_on"
             android:title="WORLD VIEW"
             android:defaultValue="NULL"/>
     </PreferenceCategory>
