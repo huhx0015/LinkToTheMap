@@ -17,7 +17,6 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -257,7 +256,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         updateDisplayLayout(); // Updates the screen resolution attributes.
         spinnerOrientation(); // Updates the mapSpinner's layout parameters based on current device orientation.
         loadMapMatrix(); // Updates the map matrix with the new screen resolution values.
-        updateMapTextSize();  // The mapTitle TextView object's font size is adjusted for layout formatting.
     }
 
     /** PHYSICAL BUTTON FUNCTIONALITY __________________________________________________________ **/
@@ -356,16 +354,10 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
         // RESOURCE VARIABLES:
         loadingName = gameSprites.getInstance().loadingName; // Stores the reference ID of the loading screen.
-        int globeIcon = gameSprites.getInstance().globeIcon; // Stores the reference ID of the search icon.
 
         // If the device is in landscape mode, the top display will initially be hidden, as it
         // overlaps with the loading screen background.
         if (currentOrientation == 1) { topDisplay.setVisibility(View.INVISIBLE); }
-
-        // SCALE VARIABLES:
-        boolean scaler_320p = false; // Used for determining if the icon images are being scaled or not for 320p.
-        boolean scaler_480p = false; // Used for determining if the icon images are being scaled or not for 480p - 800p.
-        int scaleValue = 48; // Stores the scale value for any icon images that are being scaled.
 
         spinnerOrientation(); // Sets the spinner bar attributes based on current screen orientation.
 
@@ -374,98 +366,15 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         TextView nowLoading = (TextView) findViewById(R.id.lttm_loading_notice);
         nowLoading.setTypeface(LTTMFont.getInstance(this).getTypeFace()); // Sets custom font properties.
 
-        updateMapTextSize();  // The mapTitle TextView object's font size is adjusted for layout formatting.
+        // Converts pixels into density pixels.
+        float scale = getResources().getDisplayMetrics().density;
+        int dpToPixels = (int) (10 * scale + 0.5f); // Converts 10dp into pixels.
 
-        // 240p - 320p: If the device's display size is less than 480p, the icons and the loading
-        // screens are downsized.
-        if (displaySize < 480) {
-
-            // Sets the scaled values.
-            scaler_320p = true; // Indicates that the icon images are being scaled.
-            scaleValue = 24; // Sets the scale value to 24 x 24.
-
-            // 240p:
-            if (displaySize < 320) {
-
-                // The loading screen ImageView object is downscaled to 120 x 120 for 240p devices.
-                FrameLayout.LayoutParams loadingSize = new FrameLayout.LayoutParams(120, 120);
-                loadingBackground.setLayoutParams(loadingSize);
-            }
-
-            // 320p:
-            else {
-
-                // The loading screen ImageView object is downscaled to 240 x 240 for 320p devices.
-                FrameLayout.LayoutParams loadingSize = new FrameLayout.LayoutParams(240, 240);
-                loadingBackground.setLayoutParams(loadingSize);
-            }
-
-            // Retrieves the layout parameters for each layout.
-            ViewGroup.LayoutParams mapButtonParams = mapButton.getLayoutParams();
-            ViewGroup.LayoutParams globeButtonParams = globeButton.getLayoutParams();
-
-            // Sets the new dimensions for the layouts.
-            mapButtonParams.width = scaleValue;
-            mapButtonParams.height = scaleValue;
-            globeButtonParams.width = scaleValue;
-            globeButtonParams.height = scaleValue;
-
-            // Sets the new parameters for each layout.
-            mapButton.setLayoutParams(mapButtonParams);
-            globeButton.setLayoutParams(globeButtonParams);
-        }
-
-        // 480p - 800p: If the device's display size is 480p or greater and is less than 1080p, the icon sizes are downscaled.
-        if ( (displaySize >= 480) && (displaySize < 1080)) {
-
-            // Sets the scaled values.
-            scaler_480p = true; // Indicates that the icon images are being scaled.
-            scaleValue = 48; // Sets the scale value to 48 x 48.
-
-            // GLOBE: Sets the downsized parameters for the globe icon.
-            ViewGroup.LayoutParams globeButtonParams = globeButton.getLayoutParams();
-            globeButtonParams.width = scaleValue;
-            globeButtonParams.height = scaleValue;
-            globeButton.setLayoutParams(globeButtonParams);
-        }
-
-        // 720p - 800p: If the device's display size is 720p and less than 1080p, the padding on the map button
-        // is adjusted.
-        if ( (displaySize >= 720) || (displaySize < 1080) ) {
-
-            // Converts pixels into density pixels.
-            float scale = getResources().getDisplayMetrics().density;
-            int dpToPixels = (int) (10 * scale + 0.5f); // Converts 10dp into pixels.
-
-            FrameLayout lttm_map_icon_container = (FrameLayout) findViewById(R.id.lttm_map_icon_container);
-            lttm_map_icon_container.setPadding(dpToPixels, dpToPixels, dpToPixels, dpToPixels); // Sets the new padding size.
-        }
-
-        // 1080p - 1440p: If the device's display size is 1080p or greater, the 1080p version of menu/search buttons
-        // are set and the loading screen is upscaled.
-        if (displaySize >= 1080) {
-
-            // The ImageView object is upscaled to 960 x 960 for 1080p devices.
-            FrameLayout.LayoutParams size = new FrameLayout.LayoutParams(960, 960);
-            loadingBackground.setLayoutParams(size);
-        }
-
-        // 320p - 800p: Downsizes the ImageButton objects for devices running at 320p - 800p.
-        if ( (scaler_320p) || (scaler_480p)) {
-            Picasso.with(this).load(globeIcon).noFade().resize(scaleValue, scaleValue).centerInside()
-                    .withOptions(LTTMImages.setBitmapOptions()).into(globeButton);
-        }
-
-        // 320p: Downsizes the ImageButton objects for devices running at 320p.
-        if (scaler_320p) {
-            Picasso.with(this).load(loadingName).noFade().resize(scaleValue, scaleValue).centerInside()
-                    .withOptions(LTTMImages.setBitmapOptions()).into(loadingBackground);
-        }
+        FrameLayout lttm_map_icon_container = (FrameLayout) findViewById(R.id.lttm_map_icon_container);
+        lttm_map_icon_container.setPadding(dpToPixels, dpToPixels, dpToPixels, dpToPixels); // Sets the new padding size.
 
         // The loading screen, search, and additional button image references are assigned to the ImageView objects.
-        else {
-            Picasso.with(this).load(loadingName).noFade().withOptions(LTTMImages.setBitmapOptions()).into(loadingBackground);
-        }
+        Picasso.with(this).load(loadingName).noFade().withOptions(LTTMImages.setBitmapOptions()).into(loadingBackground);
     }
 
     // spinnerOrientation(): Checks the device's current orientation and sets the appropriate
@@ -490,20 +399,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         displayDimen = LTTMDisplay.getResolution(display); // Retrieves the device's resolution attributes.
         displaySize = LTTMDisplay.getDisplaySize(displayDimen, currentOrientation); // Retrieves the device's display size attribute.
         viewScreen = new RectF(0, 0, displayDimen.x, displayDimen.y); // Sets screen dimensions to device stats.
-    }
-
-    // updateMapTextSize(): This method updates the mapTitle TextView's font attributes based on
-    // the device's display size and current screen orientation.
-    private void updateMapTextSize() {
-
-        // 540p: If the device's display size is 540p and is in portrait mode, the map title
-        // TextView font size is adjusted.
-        if ( (currentOrientation == 0) && (displaySize >= 540) && (displaySize < 552) ) {
-            mapTitle.setTextSize(15);
-        }
-
-        // 240p - 480p, 600p - 1440p:
-        else { mapTitle.setTextSize(20); }
     }
 
     /** USER INTERFACE FUNCTIONALITY ___________________________________________________________ **/
@@ -852,100 +747,73 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     }
 
     // loadImage(): This function loads the map image into the main ImageView object.
-    private void loadImage(boolean isInternet, String mapName, Callback callback) {
+    private void loadImage(String mapName, Callback callback) {
 
-        // FUTURE FEATURE: If the map image is hosted on the Internet, Picasso is invoked with a URL.
-        if (isInternet) { } // Feature currently unimplemented.
+        // Retrieves the map width and height.
+        Point mapDimen = LTTMImages.getImageDimensions(getResources(), lttm_maps.getInstance().mapViewImage);
+        mapWidth = mapDimen.x; // Map image's width property.
+        mapHeight = mapDimen.y; // Map image's height property.
 
-        // Otherwise, the map image is loaded directly from local resources.
+        // If "MEDIUM" graphics mode has been enabled and the map is larger than 2048 x 2048,
+        // hardware acceleration is disabled for the map.
+        if ( (lttm_maps.getInstance().graphicsMode == 1) && (lttm_maps.getInstance().isLarge)) {
+
+            // Disables hardware acceleration on the View container.
+            if (api_level >= 11) { LTTMOpenGL.enableHardwareAcceleration(worldView, false); }
+        }
+
+        // Otherwise, hardware acceleration is enabled and the map is loaded normally.
         else {
 
-            // Retrieves the map width and height.
-            Point mapDimen = LTTMImages.getImageDimensions(getResources(), lttm_maps.getInstance().mapViewImage);
-            mapWidth = mapDimen.x; // Map image's width property.
-            mapHeight = mapDimen.y; // Map image's height property.
+            // Enables hardware acceleration on the View container.
+            if (api_level >= 11) { LTTMOpenGL.enableHardwareAcceleration(worldView, true); }
+        }
 
-            // If "LOW" graphics mode has been enabled and the map is larger than 2048 x 2048, the
-            // map is downscaled accordingly and sets the bitmap image to be loaded in the background.
-            if ( (lttm_maps.getInstance().graphicsMode == 0) && (lttm_maps.getInstance().isLarge) ) {
+        Picasso.with(this)
+                .load(lttm_maps.getInstance().mapViewImage)
+                .placeholder(R.drawable.lttm_transparent_tile)
+                .noFade()
+                .withOptions(LTTMImages.setBitmapOptions())
+                .into(mapView, callback);
 
-                mapWidth = mapWidth / 2; // Downscales the map width to half the original width.
-                mapHeight = mapHeight / 2; // Downscales the map height to half the original height.
+        Target target = new Target() {
 
-                Picasso.with(this)
-                        .load(lttm_maps.getInstance().mapViewImage)
-                        .placeholder(R.drawable.lttm_transparent_tile)
-                        .resize((int) mapWidth, (int) mapHeight)
-                        .noFade()
-                        .withOptions(LTTMImages.setBitmapOptions())
-                        .into(mapView, callback);
+            // onBitmapLoaded(): Runs when the bitmap is loaded.
+            @SuppressLint("NewApi")
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                locationUnderlay.setImageBitmap(bitmap);
             }
 
-            // Loads the selected map image normally with no scaling.
-            else {
+            // onBitmapFailed(): Runs when the bitmap failed to load.
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {}
 
-                // If "MEDIUM" graphics mode has been enabled and the map is larger than 2048 x 2048,
-                // hardware acceleration is disabled for the map.
-                if ( (lttm_maps.getInstance().graphicsMode == 1) && (lttm_maps.getInstance().isLarge)) {
+            // onPrepareLoad(): Runs prior to loading the bitmap.
+            @SuppressLint("NewApi")
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        };
 
-                    // Disables hardware acceleration on the View container.
-                    if (api_level >= 11) { LTTMOpenGL.enableHardwareAcceleration(worldView, false); }
-                }
-
-                // Otherwise, hardware acceleration is enabled and the map is loaded normally.
-                else {
-
-                    // Enables hardware acceleration on the View container.
-                    if (api_level >= 11) { LTTMOpenGL.enableHardwareAcceleration(worldView, true); }
-                }
-
+        switch (mapName) {
+            case "Light World":
                 Picasso.with(this)
-                        .load(lttm_maps.getInstance().mapViewImage)
-                        .placeholder(R.drawable.lttm_transparent_tile)
-                        .noFade()
-                        .withOptions(LTTMImages.setBitmapOptions())
-                        .into(mapView, callback);
+                        .load(R.drawable.loz_alttp_light_world_underlay)
+                        .into(target);
+                floorMapButtonLayout.setVisibility(View.GONE);
+                break;
 
-                Target target = new Target() {
+            case "Dark World":
+                Picasso.with(this)
+                        .load(R.drawable.loz_alttp_dark_world_underlay)
+                        .into(target);
+                floorMapButtonLayout.setVisibility(View.GONE);
+                break;
 
-                    // onBitmapLoaded(): Runs when the bitmap is loaded.
-                    @SuppressLint("NewApi")
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        locationUnderlay.setImageBitmap(bitmap);
-                    }
-
-                    // onBitmapFailed(): Runs when the bitmap failed to load.
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {}
-
-                    // onPrepareLoad(): Runs prior to loading the bitmap.
-                    @SuppressLint("NewApi")
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {}
-                };
-
-                switch (mapName) {
-                    case "Light World":
-                        Picasso.with(this)
-                                .load(R.drawable.loz_alttp_light_world_underlay)
-                                .into(target);
-                        floorMapButtonLayout.setVisibility(View.GONE);
-                        break;
-
-                    case "Dark World":
-                        Picasso.with(this)
-                                .load(R.drawable.loz_alttp_dark_world_underlay)
-                                .into(target);
-                        floorMapButtonLayout.setVisibility(View.GONE);
-                        break;
-
-                    default:
-                        locationUnderlay.setImageDrawable(null);
-                        floorMapButtonLayout.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
+            default:
+                locationUnderlay.setImageDrawable(null);
+                floorMapButtonLayout.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -983,7 +851,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             }
         };
 
-        loadImage(lttm_maps.getInstance().isWeb, mapName, callback); // Loads the map image directly into the ImageView.
+        loadImage(mapName, callback); // Loads the map image directly into the ImageView.
     }
 
     // loadMapMatrix(): Prepares the viewing matrix attributes for the map currently loaded.

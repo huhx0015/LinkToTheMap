@@ -25,7 +25,7 @@ public class LTTMSounds {
     // AUDIO VARIABLES:
     private AudioManager soundManager; // AudioManager variable for sound effects.
     private MediaPlayer mapSong; // MediaPlayer variable for map song.
-    private SoundPool dq_soundpool; // SoundPool variable for sound effects.
+    private SoundPool lttm_soundpool; // SoundPool variable for sound effects.
     private SparseIntArray soundEffectMap; // Hash map for sound effects.
     private String currentSong; // Used for determining what song is playing in the background.
     private boolean isPaused; // Used for determining if a song has been paused.
@@ -73,8 +73,8 @@ public class LTTMSounds {
     // device, the SoundPool object is created using the appropriate methods.
     private void setUpSoundPool() {
 
-        if (api_level > 20) { dq_soundpool = constructSoundPool(); } // Android 5.0 and above.
-        else { dq_soundpool = new SoundPool(MAX_SIMULTANEOUS_SOUNDS, AudioManager.STREAM_MUSIC, 0); } // Android 2.3 - 4.4
+        if (api_level > 20) { lttm_soundpool = constructSoundPool(); } // Android 5.0 and above.
+        else { lttm_soundpool = new SoundPool(MAX_SIMULTANEOUS_SOUNDS, AudioManager.STREAM_MUSIC, 0); } // Android 2.3 - 4.4
     }
 
     // constructSoundPool(): Builds the SoundPool object. This implementation is only used on
@@ -106,13 +106,13 @@ public class LTTMSounds {
 
     // loadLTTMsounds(): Loads sound effects into the soundEffectMap hash map.
     public void loadLTTMsounds() {
-        soundEffectMap.put(1, dq_soundpool.load(lttm_context, R.raw.alttp_text_done, 1));
-        soundEffectMap.put(2, dq_soundpool.load(lttm_context, R.raw.alttp_error, 1));
-        soundEffectMap.put(3, dq_soundpool.load(lttm_context, R.raw.alttp_savequit, 1));
-        soundEffectMap.put(4, dq_soundpool.load(lttm_context, R.raw.alttp_menu_select, 1));
-        soundEffectMap.put(5, dq_soundpool.load(lttm_context, R.raw.alttp_map, 1));
-        soundEffectMap.put(6, dq_soundpool.load(lttm_context, R.raw.alttp_error, 1));
-        soundEffectMap.put(7, dq_soundpool.load(lttm_context, R.raw.alttp_secret, 1));
+        soundEffectMap.put(1, lttm_soundpool.load(lttm_context, R.raw.alttp_text_done, 1));
+        soundEffectMap.put(2, lttm_soundpool.load(lttm_context, R.raw.alttp_error, 1));
+        soundEffectMap.put(3, lttm_soundpool.load(lttm_context, R.raw.alttp_savequit, 1));
+        soundEffectMap.put(4, lttm_soundpool.load(lttm_context, R.raw.alttp_menu_select, 1));
+        soundEffectMap.put(5, lttm_soundpool.load(lttm_context, R.raw.alttp_map, 1));
+        soundEffectMap.put(6, lttm_soundpool.load(lttm_context, R.raw.alttp_error, 1));
+        soundEffectMap.put(7, lttm_soundpool.load(lttm_context, R.raw.alttp_secret, 1));
     }
 
     // playSoundEffect(): This is a threaded function that plays the selected sound effect.
@@ -120,7 +120,7 @@ public class LTTMSounds {
 
         // Checks to see if the soundPool class has been instantiated first before playing a sound effect.
         // This is to prevent a rare null pointer exception bug.
-        if (dq_soundpool == null) {
+        if (lttm_soundpool == null) {
             soundEffectMap = new SparseIntArray(); // Initializes a new SparseIntArray object.
             setUpSoundPool(); // Initializes the SoundPool object.
             loadLTTMsounds(); // Loads the sound effect hash map.
@@ -145,8 +145,8 @@ public class LTTMSounds {
 
                     // Checks to see if the SoundPool object is null first. If not, the sound effect
                     // is played.
-                    if (dq_soundpool != null) {
-                        dq_soundpool.play(soundEffectMap.get(index), volume, volume, 1, 0, 1.0f); // Plays the sound effect.
+                    if (lttm_soundpool != null) {
+                        lttm_soundpool.play(soundEffectMap.get(index), volume, volume, 1, 0, 1.0f); // Plays the sound effect.
                         soundEventCount++; // Increments the sound event counter.
                     }
                 }
@@ -271,9 +271,9 @@ public class LTTMSounds {
     public void releaseAudio() {
 
         // Releases SoundPool resources.
-        if (dq_soundpool != null) {
-            dq_soundpool.release();
-            dq_soundpool = null;
+        if (lttm_soundpool != null) {
+            lttm_soundpool.release();
+            lttm_soundpool = null;
         }
     }
 
