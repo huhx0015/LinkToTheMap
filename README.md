@@ -30,8 +30,8 @@ Link to the Map utilizes a custom-built map engine, which is also utilized in Dr
 
 ## Copyright
 
-Link to the Map is a fan application and is not associated with or endorsed by NINTENDO.
+Link to the Map is a fan application and is not associated with or endorsed by Nintendo Co., Ltd.
 
-© THE LEGEND OF ZELDA: A LINK TO THE PAST is a registered trademark of NINTENDO.
+© THE LEGEND OF ZELDA: A LINK TO THE PAST is a registered trademark of Nintendo Co., Ltd.
 
-All LEGEND OF ZELDA images, logos, names, music, and related media are intellectual properties of NINTENDO unless otherwise noted.
+All LEGEND OF ZELDA images, logos, names, music, and related media are intellectual properties of Nintendo, unless otherwise noted.
