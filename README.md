@@ -6,8 +6,6 @@ DEVELOPER: huhx0015
 ### LINK TO THE MAP
 ![linktothemap_preview](https://cloud.githubusercontent.com/assets/1645482/16185724/d53f8798-367a-11e6-9262-59d6208e08bc.gif)
 
-#### Status: DISCONTINUED
-
 ## Description
 
 This is a demo Android application that allows users to view the light and dark world maps from the classic Super Nintendo game, The Legend of Zelda: A Link to the Past. Users can use touch gestures to scroll in and out of the world map. In addition, this application features graphics, music, and sound effects from the Legend of Zelda: Link to the Past, to induce nostalgia for fans of the game.
