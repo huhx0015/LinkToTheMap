@@ -46,7 +46,6 @@ public class LTTMMap {
         this.mapLevelB5 = levelB5;
     }
 
-
     public int getMapResourceId() {
         return mapResourceId;
     }

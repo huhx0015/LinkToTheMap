@@ -22,6 +22,9 @@ public class LTTMSounds {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // INSTANCE VARIABLES
+    private static LTTMSounds lttm_sounds; // LTTMSounds instance variable.
+
     // AUDIO VARIABLES:
     private AudioManager soundManager; // AudioManager variable for sound effects.
     private MediaPlayer mapSong; // MediaPlayer variable for map song.
@@ -29,33 +32,31 @@ public class LTTMSounds {
     private SparseIntArray soundEffectMap; // Hash map for sound effects.
     private String currentSong; // Used for determining what song is playing in the background.
     private boolean isPaused; // Used for determining if a song has been paused.
-    public int songPosition; // Used for resuming playback on a song that was paused.
-    public boolean musicOn; // Used for determining whether music is playing in the background.
-    public boolean soundOn; // Used for determining if sound option is enabled or not.
+    private int songPosition; // Used for resuming playback on a song that was paused.
+    private boolean musicOn; // Used for determining whether music is playing in the background.
+    private boolean soundOn; // Used for determining if sound option is enabled or not.
     private final int MAX_SIMULTANEOUS_SOUNDS = 16; // Can output twenty-four sound effects simultaneously.
     private final int MAX_SOUND_EVENTS = 25; // Maximum number of sound events before the SoundPool object is reset. Android 2.3 (GINGERBREAD) only.
     private int soundEventCount = 0; // Used to count the number of sound events that have occurred.
 
     // SYSTEM VARIABLES:
-    private Context lttm_context; // Context for the instance in which this class is used.
     private final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
+
+    /** INSTANCE FUNCTIONALITY _________________________________________________________________ **/
+
+    // getInstance(): Returns the lttm_sounds instance.
+    public static LTTMSounds getInstance() {
+        if (lttm_sounds == null) {
+            lttm_sounds = new LTTMSounds();
+        }
+        return lttm_sounds;
+    }
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
-    // LTTMSounds(): Constructor for LTTMSounds class.
-    private final static LTTMSounds lttm_sounds = new LTTMSounds();
-
-    // LTTMSounds(): Deconstructor for LTTMSounds class.
-    private LTTMSounds() {}
-
-    // getInstance(): Returns the lttm_sounds instance.
-    public static LTTMSounds getInstance() { return lttm_sounds; }
-
     // initializeLTTM(): Initializes the LTTMSounds class variables.
-    public void initializeLTTM(Context con) {
+    public void initializeLTTM() {
 
-        lttm_context = con;
-        soundManager = (AudioManager) lttm_context.getSystemService(Context.AUDIO_SERVICE);
         mapSong = new MediaPlayer();
         soundEffectMap = new SparseIntArray();
         isPaused = false;
@@ -82,18 +83,18 @@ public class LTTMSounds {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private SoundPool constructSoundPool() {
 
-        // Initializes the SoundPool.Builder and AudioAttributes.Builder objects.
-        SoundPool.Builder soundBuilder = new SoundPool.Builder();
-        AudioAttributes.Builder attributes = new AudioAttributes.Builder();
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA) // Sets the audio type to USAGE_GAME.
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
 
-        // Sets the audio type attributes for the SoundPool.Builder object.
-        attributes.setContentType(AudioAttributes.USAGE_GAME); // Sets the audio type to USAGE_GAME.
-        soundBuilder.setAudioAttributes(attributes.build()); // Sets the attributes.
+        // Initializes the SoundPool.Builder object.
+        SoundPool soundBuilder = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .setMaxStreams(MAX_SIMULTANEOUS_SOUNDS) // Sets the maximum number of audio streams.
+                .build();
 
-        // Sets the maximum number of audio streams that can be played at once.
-        soundBuilder.setMaxStreams(MAX_SIMULTANEOUS_SOUNDS); // Sets the maximum number of audio streams.
-
-        return soundBuilder.build(); // Returns the newly created SoundPool object.
+        return soundBuilder; // Returns the newly created SoundPool object.
     }
 
     /** AUDIO FUNCTIONALITY ____________________________________________________________________ **/
@@ -105,25 +106,25 @@ public class LTTMSounds {
     }
 
     // loadLTTMsounds(): Loads sound effects into the soundEffectMap hash map.
-    public void loadLTTMsounds() {
-        soundEffectMap.put(1, lttm_soundpool.load(lttm_context, R.raw.alttp_text_done, 1));
-        soundEffectMap.put(2, lttm_soundpool.load(lttm_context, R.raw.alttp_error, 1));
-        soundEffectMap.put(3, lttm_soundpool.load(lttm_context, R.raw.alttp_savequit, 1));
-        soundEffectMap.put(4, lttm_soundpool.load(lttm_context, R.raw.alttp_menu_select, 1));
-        soundEffectMap.put(5, lttm_soundpool.load(lttm_context, R.raw.alttp_map, 1));
-        soundEffectMap.put(6, lttm_soundpool.load(lttm_context, R.raw.alttp_error, 1));
-        soundEffectMap.put(7, lttm_soundpool.load(lttm_context, R.raw.alttp_secret, 1));
+    public void loadLTTMsounds(Context context) {
+        soundEffectMap.put(1, lttm_soundpool.load(context, R.raw.alttp_text_done, 1));
+        soundEffectMap.put(2, lttm_soundpool.load(context, R.raw.alttp_error, 1));
+        soundEffectMap.put(3, lttm_soundpool.load(context, R.raw.alttp_savequit, 1));
+        soundEffectMap.put(4, lttm_soundpool.load(context, R.raw.alttp_menu_select, 1));
+        soundEffectMap.put(5, lttm_soundpool.load(context, R.raw.alttp_map, 1));
+        soundEffectMap.put(6, lttm_soundpool.load(context, R.raw.alttp_error, 1));
+        soundEffectMap.put(7, lttm_soundpool.load(context, R.raw.alttp_secret, 1));
     }
 
     // playSoundEffect(): This is a threaded function that plays the selected sound effect.
-    public void playSoundEffect(final int index) {
+    public void playSoundEffect(int index, Context context) {
 
         // Checks to see if the soundPool class has been instantiated first before playing a sound effect.
         // This is to prevent a rare null pointer exception bug.
         if (lttm_soundpool == null) {
             soundEffectMap = new SparseIntArray(); // Initializes a new SparseIntArray object.
             setUpSoundPool(); // Initializes the SoundPool object.
-            loadLTTMsounds(); // Loads the sound effect hash map.
+            loadLTTMsounds(context); // Loads the sound effect hash map.
         }
 
         else {
@@ -132,7 +133,7 @@ public class LTTMSounds {
             // counter has reached the MAX_SOUND_EVENT limit. This is to handle the AudioTrack
             // 1 MB buffer limit issue.
             if ((api_level < 11) && (soundEventCount >= MAX_SOUND_EVENTS)) {
-                reinitializeSoundPool();
+                reinitializeSoundPool(context);
             }
 
             else {
@@ -141,6 +142,9 @@ public class LTTMSounds {
                 if (soundOn) {
 
                     // Retrieves the current volume value.
+                    if (soundManager == null) {
+                        soundManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                    }
                     float volume = soundManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
                     // Checks to see if the SoundPool object is null first. If not, the sound effect
@@ -156,7 +160,7 @@ public class LTTMSounds {
 
     // playMapSong(): Plays a music file based on the selected map (passed as mapName). The song is
     // changed if the song of the selected map does not match the current map song.
-    public void playMapSong(String songName) {
+    public void playMapSong(String songName, Context context) {
 
         boolean musicFound = false; // Used for determining if a corresponding song for mapName was found or not.
         int songID = 0; // Used for storing the reference ID to the raw music resource object.
@@ -192,7 +196,7 @@ public class LTTMSounds {
 
             // If a map song match was found, play the music file from resources.
             if ( (musicFound) || (isPaused) ) {
-                playSong(songID); // Calls playSong to create a MediaPlayer object and play the song.
+                playSong(songID, context); // Calls playSong to create a MediaPlayer object and play the song.
             }
         }
     }
@@ -213,7 +217,7 @@ public class LTTMSounds {
     }
 
     //  playSong(): Sets up a MediaPlayer object and begins playing the song in the background thread.
-    public void playSong(final int songName) {
+    private void playSong(int songName, Context context) {
 
         // Checks to see if the MediaPlayer class has been instantiated first before playing a song.
         // This is to prevent a rare null pointer exception bug.
@@ -230,11 +234,11 @@ public class LTTMSounds {
             releaseMedia(); // Releases MediaPool resources.
             mapSong = new MediaPlayer(); // Initializes the MediaPlayer.
             mapSong.setAudioStreamType(AudioManager.STREAM_MUSIC); // Sets the audio type for the MediaPlayer object.
-            mapSong = MediaPlayer.create(lttm_context, songName); // Sets up the MediaPlayer for the song.
+            mapSong = MediaPlayer.create(context, songName); // Sets up the MediaPlayer for the song.
             mapSong.setLooping(true); // Enables infinite looping of music.
 
             // If the song was previously paused, resume the song at it's previous location.
-            if (isPaused == true) {
+            if (isPaused) {
                 mapSong.seekTo(songPosition); // Jumps to the position where the song left off.
                 songPosition = 0; // Resets songPosition variable after song's position has been set.
                 isPaused = false; // Indicates that the song is no longer paused.
@@ -255,20 +259,20 @@ public class LTTMSounds {
     // reinitializeSoundPool(): This method re-initializes the SoundPool object for devices running
     // on Android 2.3 (GINGERBREAD) and earlier. This is to help minimize the AudioTrack out of
     // memory error, which was limited to a small 1 MB size buffer.
-    public void reinitializeSoundPool() {
+    public void reinitializeSoundPool(Context context) {
 
         // GINGERBREAD: The SoundPool is released and re-initialized. This is done to minimize the
         // AudioTrack out of memory (-12) error.
         if (api_level < 11) {
             releaseAudio(); // Releases the SoundPool object.
             setUpSoundPool(); // Initializes the SoundPool object.
-            loadLTTMsounds(); // Loads the sound effect hash map.
+            loadLTTMsounds(context); // Loads the sound effect hash map.
             soundEventCount = 0; // Resets the sound event counter.
         }
     }
 
     // releaseAudio(): Used to free up memory resources when all audio effects are no longer needed.
-    public void releaseAudio() {
+    private void releaseAudio() {
 
         // Releases SoundPool resources.
         if (lttm_soundpool != null) {
@@ -278,7 +282,7 @@ public class LTTMSounds {
     }
 
     // releaseMediaPlayer(): Used to release the resources being used by mediaPlayer objects.
-    public void releaseMedia() {
+    private void releaseMedia() {
 
         // Releases MediaPool resources.
         if (mapSong != null) {
@@ -298,5 +302,33 @@ public class LTTMSounds {
             if (mapSong.isPlaying()) { mapSong.stop(); }
             currentSong = "STOPPED";
         }
+    }
+
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    public int getSongPosition() {
+        return songPosition;
+    }
+
+    public boolean isMusicOn() {
+        return musicOn;
+    }
+
+    public boolean isSoundOn() {
+        return soundOn;
+    }
+
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setSongPosition(int songPosition) {
+        this.songPosition = songPosition;
+    }
+
+    public void setMusicOn(boolean musicOn) {
+        this.musicOn = musicOn;
+    }
+
+    public void setSoundOn(boolean soundOn) {
+        this.soundOn = soundOn;
     }
 }

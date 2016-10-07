@@ -37,22 +37,22 @@ public class LTTMPreferences {
     }
 
     // getLabelOn(): Retrieves the "lttp_overlay_on" value from preferences.
-    public static Boolean getLabelOn(SharedPreferences preferences) {
+    public static boolean getLabelOn(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_overlay_on", false); // Retrieves the label mode setting.
     }
 
     // getMapReload(): Retrieves the "lttp_map_reload" value from preferences.
-    public static Boolean getMapReload(SharedPreferences preferences) {
+    public static boolean getMapReload(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_map_reload", true); // Retrieves the map reload setting.
     }
 
     // getMatrixRecalculate(): Retrieves the "lttp_matrix_recalculate" value from preferences.
-    public static Boolean getMatrixRecalculate(SharedPreferences preferences) {
+    public static boolean getMatrixRecalculate(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_matrix_recalculate", true); // Retrieves the matrix recalculate setting.
     }
 
     // getMusicOn(): Retrieves the "lttp_music_on" value from preferences.
-    public static Boolean getMusicOn(SharedPreferences preferences) {
+    public static boolean getMusicOn(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_music_on", true); // Retrieves the music option setting.
     }
 
@@ -62,7 +62,7 @@ public class LTTMPreferences {
     }
 
     // getSoundOn(): Retrieves the "lttp_sound_on" value from preferences.
-    public static Boolean getSoundOn(SharedPreferences preferences) {
+    public static boolean getSoundOn(SharedPreferences preferences) {
         return preferences.getBoolean("lttp_sound_on", true); // Retrieves the sound option setting.
     }
 

@@ -11,7 +11,7 @@ import com.ycorner.linktothemap.Data.LTTMMemory;
 import com.ycorner.linktothemap.Data.LTTMPreferences;
 import com.ycorner.linktothemap.R;
 import com.ycorner.linktothemap.UI.LTTMFont;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /** -----------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ public class LTTMTitleScreenActivity extends Activity {
     private static final String LTTM_TEMPS = "lttp_temps";
 
     // VIEW INJECTION VARIABLES
-    @Bind(R.id.title_start_button) Button startButton;
+    @BindView(R.id.title_start_button) Button startButton;
 
     /** ACTIVITY LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
 
@@ -41,8 +41,8 @@ public class LTTMTitleScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // CLASS INITIALIZATION: Initializes the class objects.
-        LTTMSounds.getInstance().initializeLTTM(getApplicationContext()); // Initializes the LTTMSounds class object.
-        LTTMSounds.getInstance().loadLTTMsounds(); // Loads the soundPool with a hash map of sound effects.
+        LTTMSounds.getInstance().initializeLTTM(); // Initializes the LTTMSounds class object.
+        LTTMSounds.getInstance().loadLTTMsounds(this); // Loads the soundPool with a hash map of sound effects.
 
         // PREFERENCES: Retrieves any preferences that may have been changed in options and applies them accordingly.
         LTTM_temps = LTTMPreferences.initializePreferences(LTTM_TEMPS, this); // Temporary preferences object.
@@ -85,13 +85,13 @@ public class LTTMTitleScreenActivity extends Activity {
         ButterKnife.bind(this);
 
         // Sets the custom font on the start button.
-        startButton.setTypeface(LTTMFont.getInstance(this).getTypeFace());
+        startButton.setTypeface(LTTMFont.getInstance().getTypeFace(this));
 
         // Sets a listener for the start button.
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LTTMSounds.getInstance().playSoundEffect(4);
+                LTTMSounds.getInstance().playSoundEffect(4, LTTMTitleScreenActivity.this);
                 prepareWorldPreferences("loz_alttp"); // Prepares the temporary preference values related to LTTMWorldView activity.
 
                 Intent i = new Intent(LTTMTitleScreenActivity.this, LTTMWorldViewActivity.class);

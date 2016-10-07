@@ -35,7 +35,7 @@ public class LTTMMenus {
     @SuppressLint("NewApi")
     public void createMapSpinner(final Context con, Spinner spin, final String maps[]) {
 
-        final Typeface spinnerFont = LTTMFont.getInstance(con).getTypeFace();
+        final Typeface spinnerFont = LTTMFont.getInstance().getTypeFace(con);
 
         // Initializes and creates a new ArrayAdapter object for the spinner.
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(con,

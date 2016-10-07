@@ -17,27 +17,21 @@ public class LTTMFont {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    private final Context context;
     private static LTTMFont instance;
 
     /** CLASS FUNCTIONALITY ____________________________________________________________________ **/
 
-    // LTTMFont(): Constructor for the LTTMFont class.
-    private LTTMFont(Context context) {
-        this.context = context;
-    }
-
     // getInstance(): Creates an instance of the LTTMFont class.
-    public static LTTMFont getInstance(Context context) {
+    public static LTTMFont getInstance() {
         synchronized (LTTMFont.class) {
             if (instance == null)
-                instance = new LTTMFont(context);
+                instance = new LTTMFont();
             return instance;
         }
     }
 
     // getTypeFace(): Retrieves the custom font family (Return of Gannon) from resources.
-    public Typeface getTypeFace() {
+    public Typeface getTypeFace(Context context) {
         return Typeface.createFromAsset(context.getResources().getAssets(),
                 "fonts/return_of_gannon.ttf");
     }

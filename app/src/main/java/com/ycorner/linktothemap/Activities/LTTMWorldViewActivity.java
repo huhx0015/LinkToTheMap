@@ -38,7 +38,7 @@ import com.ycorner.linktothemap.UI.LTTMFont;
 import com.ycorner.linktothemap.Graphics.LTTMImages;
 import com.ycorner.linktothemap.Data.LTTMMapData;
 import com.ycorner.linktothemap.UI.LTTMMenus;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import it.sephiroth.android.library.picasso.Callback;
 import it.sephiroth.android.library.picasso.Picasso;
@@ -65,7 +65,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
     // CLASS VARIABLES
     private LTTMMenus lttm_menus; // LTTMMenus class object that is used for menu-related functionality.
-    private LTTMSounds lttm_sounds; // LTTMSounds object that stores all the music and sound effects that are played.
 
     // GESTURE VARIABLES
     private GestureDetector mapGestures; // Used for detecting gestures such as double-tap & long-press events.
@@ -82,7 +81,6 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     private int loadingName; // Stores the reference ID for the loading, menu, search, and treasure box images.
 
     // MAP VARIABLES
-    private LTTMMapData lttm_maps; // LTTMMaps object that stores all the map information for the loaded map.
     private boolean initialMapLoad = true; // Used for determining if the map being loaded is the first map.
     private boolean noTouch = false; // Used to determine if the user can interact with the map or buttons.
     private float mapWidth, mapHeight; // Used for storing the map's width and height values.
@@ -106,30 +104,30 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
     // SYSTEM VARIABLES
     private final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
-    private int displaySize; // Stores the device's display size.
     private final int RESULT_CLOSE_ALL = 1; // Used for startActivityForResult activity termination.
+    private int displaySize; // Stores the device's display size.
     private Point displayDimen = new Point(); // Used for determining the device's display resolution.
 
     // VIEW INJECTION VARIABLES
-    @Bind(android.R.id.content) View worldView;
-    @Bind(R.id.lttp_map_bar_bottom) FrameLayout bottomDisplay;
-    @Bind(R.id.lttp_loading_display) FrameLayout loadingDisplay;
-    @Bind(R.id.lttp_map_search_spinner_container) LinearLayout spinnerLayout;
-    @Bind(R.id.lttp_map_icon) ImageButton mapButton;
-    @Bind(R.id.lttp_map_search_icon) ImageButton globeButton;
-    @Bind(R.id.lttp_loading_background) ImageView loadingBackground;
-    @Bind(R.id.world_map_view) ImageView mapView;
-    @Bind(R.id.world_map_overlay) ImageView mapOverlay;
-    @Bind(R.id.world_map_underlay) ImageView mapUnderlay;
-    @Bind(R.id.map_location_underlay) ImageView locationUnderlay;
-    @Bind(R.id.lttp_map_bar_2_layer) LinearLayout topDisplayRow_2;
-    @Bind(R.id.lttp_map_spinner) Spinner mapSpinner;
-    @Bind(R.id.lttp_map_bar_top) TableLayout topDisplay;
-    @Bind(R.id.lttp_map_name) TextView mapTitle;
-    @Bind(R.id.lttm_map_1f_button) ImageButton map1FButton;
-    @Bind(R.id.lttm_map_2f_button) ImageButton map2FButton;
-    @Bind(R.id.lttm_map_b1_button) ImageButton mapB1Button;
-    @Bind(R.id.lttm_map_bar_left) LinearLayout floorMapButtonLayout;
+    @BindView(android.R.id.content) View worldView;
+    @BindView(R.id.lttp_map_bar_bottom) FrameLayout bottomDisplay;
+    @BindView(R.id.lttp_loading_display) FrameLayout loadingDisplay;
+    @BindView(R.id.lttp_map_search_spinner_container) LinearLayout spinnerLayout;
+    @BindView(R.id.lttp_map_icon) ImageButton mapButton;
+    @BindView(R.id.lttp_map_search_icon) ImageButton globeButton;
+    @BindView(R.id.lttp_loading_background) ImageView loadingBackground;
+    @BindView(R.id.world_map_view) ImageView mapView;
+    @BindView(R.id.world_map_overlay) ImageView mapOverlay;
+    @BindView(R.id.world_map_underlay) ImageView mapUnderlay;
+    @BindView(R.id.map_location_underlay) ImageView locationUnderlay;
+    @BindView(R.id.lttp_map_bar_2_layer) LinearLayout topDisplayRow_2;
+    @BindView(R.id.lttp_map_spinner) Spinner mapSpinner;
+    @BindView(R.id.lttp_map_bar_top) TableLayout topDisplay;
+    @BindView(R.id.lttp_map_name) TextView mapTitle;
+    @BindView(R.id.lttm_map_1f_button) ImageButton map1FButton;
+    @BindView(R.id.lttm_map_2f_button) ImageButton map2FButton;
+    @BindView(R.id.lttm_map_b1_button) ImageButton mapB1Button;
+    @BindView(R.id.lttm_map_bar_left) LinearLayout floorMapButtonLayout;
 
     /** ACTIVITY LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
 
@@ -150,7 +148,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         ButterKnife.bind(this); // ButterKnife view injection initialization.
 
         // IMAGEVIEW INITIALIZATION:
-        lttm_maps.getInstance().initializeLTTM(); // Initializes the lttm_maps class variable.
+        LTTMMapData.getInstance().initializeLTTM(); // Initializes the LTTMMapData class variable.
         clearMap(); // Assigns all map-related ImageViews to blank map images.
 
         // PREFERENCES INITIALIZATION: Retrieves the values from the shared preferences object.
@@ -158,7 +156,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
         // LAYOUT INITIALIZATION: Sets up the loading screen, buttons, and spinner objects.
         setUpButtons(); // Sets up the listeners and resources for the buttons.
-        setUpLayout(lttm_maps.getInstance().gameName); // Sets up the loading screen and top bar resources.
+        setUpLayout(LTTMMapData.getInstance().getGameName()); // Sets up the loading screen and top bar resources.
         setUpSpinner(map_reload); // Sets up the map spinner list.
 
         // GESTURE INITIALIZATION: Sets up onTouch and GestureListeners for screen touch events.
@@ -188,7 +186,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             mapSpinner.setSelection(spinner_choice); // Sets the mapSpinner position to it's previous position.
 
             // Resumes song where it left off before entering into onPause().
-            lttm_sounds.getInstance().playMapSong(currentSong); // Plays the menu song for WorldView.
+            LTTMSounds.getInstance().playMapSong(currentSong, this); // Plays the menu song for WorldView.
             pauseOn = false; // Indicates that the activity is no longer in resume mode.
         }
     }
@@ -211,12 +209,12 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             // Saves the current properties of the WorldView class to preferences before pausing the activity.
             LTTMPreferences.setCurrentWorld(spinner_choice, LTTM_temps); // Current spinner selection.
             LTTMPreferences.setCurrentSong(currentSong, LTTM_temps); // Saves the name of the current song for use in LTTMOptions.
-            LTTMPreferences.setSongPosition(lttm_sounds.getInstance().songPosition, LTTM_temps);
+            LTTMPreferences.setSongPosition(LTTMSounds.getInstance().getSongPosition(), LTTM_temps);
 
-            lttm_sounds.getInstance().pauseSong(); // Pauses the song.
+            LTTMSounds.getInstance().pauseSong(); // Pauses the song.
 
             // Refreshes the SoundPool object for Android 2.3 (GINGERBREAD) devices.
-            LTTMSounds.getInstance().reinitializeSoundPool();
+            LTTMSounds.getInstance().reinitializeSoundPool(this);
 
             pauseOn = true; // Used to indicate that the current activity has entered into an onPause() state.
         }
@@ -265,10 +263,10 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     @Override
     public void onBackPressed() {
 
-        lttm_sounds.getInstance().playSoundEffect(1); // Plays the "lttm_menu" sound effect.
+        LTTMSounds.getInstance().playSoundEffect(1, this); // Plays the "lttm_menu" sound effect.
 
         // Loads the parent map if one exists. Otherwise, the activity is concluded.
-        returnToWorld(lttm_maps.getInstance().parentMap);
+        returnToWorld(LTTMMapData.getInstance().getParentMap());
     }
 
     // onKeyDown(): When a user presses the menu key, it displays the menu dialog.
@@ -278,8 +276,8 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         // SEARCH KEY: The map spinner list is displayed when the search key is pressed.
         if (keyCode == KeyEvent.KEYCODE_SEARCH) {
 
-            lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
-            ((Spinner) findViewById(R.id.lttp_map_spinner)).performClick(); // Activates the map spinner list.
+            LTTMSounds.getInstance().playSoundEffect(1, this); // Plays the "Menu" sound effect.
+            mapSpinner.performClick(); // Activates the map spinner list.
             return true; // Returns true to prevent further propagation of the key event.
         }
 
@@ -324,15 +322,15 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
         // Loads the map overlay image. If the map is larger than 2048 x 2048 and LOW GRAPHICS mode
         // has been enabled, the map overlay image is scaled down.
-        if ( (lttm_maps.getInstance().graphicsMode == 0) && (lttm_maps.getInstance().isLarge == true) ) {
-            Picasso.with(this).load(lttm_maps.getInstance().mapOverlayImage)
+        if ( (LTTMMapData.getInstance().getGraphicsMode() == 0) && (LTTMMapData.getInstance().isLarge()) ) {
+            Picasso.with(this).load(LTTMMapData.getInstance().getMapOverlayImage())
                     .withOptions(LTTMImages.setBitmapOptions()).resize( (int) mapWidth, (int) mapHeight)
                     .into(mapOverlay);
         }
 
         // Loads the map overlay image normally.
         else {
-            Picasso.with(this).load(lttm_maps.getInstance().mapOverlayImage)
+            Picasso.with(this).load(LTTMMapData.getInstance().getMapOverlayImage())
                     .withOptions(LTTMImages.setBitmapOptions()).into(mapOverlay);
         }
 
@@ -340,7 +338,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
         // Makes the mapUnderlay layer visible.
         locationUnderlay.setVisibility(View.VISIBLE);
-        mapUnderlay.setBackgroundResource(lttm_maps.getInstance().mapUnderlayImage);
+        mapUnderlay.setBackgroundResource(LTTMMapData.getInstance().getMapUnderlayImage());
         mapUnderlay.setVisibility(View.VISIBLE);
     }
 
@@ -348,12 +346,11 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     private void setUpLayout(String game) {
 
         // SPRITE VARIABLES:
-        LTTMSprites gameSprites = null; // LTTMSprite object that stores the sprite resources.
-        gameSprites.getInstance().initializeLTTM(); // Initializes the LTTMSprite object.
-        gameSprites.getInstance().loadGameSprites(game); // Loads the sprite resources based on the selected game and language.
+        LTTMSprites.getInstance().initializeLTTM(); // Initializes the LTTMSprite object.
+        LTTMSprites.getInstance().loadGameSprites(game); // Loads the sprite resources based on the selected game and language.
 
         // RESOURCE VARIABLES:
-        loadingName = gameSprites.getInstance().loadingName; // Stores the reference ID of the loading screen.
+        loadingName = LTTMSprites.getInstance().getLoadingName(); // Stores the reference ID of the loading screen.
 
         // If the device is in landscape mode, the top display will initially be hidden, as it
         // overlaps with the loading screen background.
@@ -362,9 +359,9 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         spinnerOrientation(); // Sets the spinner bar attributes based on current screen orientation.
 
         // TEXT VARIABLES:
-        mapTitle.setTypeface(LTTMFont.getInstance(this).getTypeFace()); // Sets custom font properties.
+        mapTitle.setTypeface(LTTMFont.getInstance().getTypeFace(this)); // Sets custom font properties.
         TextView nowLoading = (TextView) findViewById(R.id.lttm_loading_notice);
-        nowLoading.setTypeface(LTTMFont.getInstance(this).getTypeFace()); // Sets custom font properties.
+        nowLoading.setTypeface(LTTMFont.getInstance().getTypeFace(this)); // Sets custom font properties.
 
         // Converts pixels into density pixels.
         float scale = getResources().getDisplayMetrics().density;
@@ -419,8 +416,8 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             public void onClick(View v) {
 
                 if (!noTouch) {
-                    lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
-                    ((Spinner) findViewById(R.id.lttp_map_spinner)).performClick(); // Activates the map spinner list.
+                    LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
+                    mapSpinner.performClick(); // Activates the map spinner list.
                 }
             }
         });
@@ -432,8 +429,8 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             public void onClick(View v) {
 
                 if (!noTouch) {
-                    lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
-                    ((Spinner) findViewById(R.id.lttp_map_spinner)).performClick(); // Activates the map spinner list.
+                    LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
+                    mapSpinner.performClick(); // Activates the map spinner list.
                 }
             }
         });
@@ -445,8 +442,8 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             public void onClick(View v) {
 
                 if (!noTouch) {
-                    lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
-                    ((Spinner) findViewById(R.id.lttp_map_spinner)).performClick(); // Activates the map spinner list.
+                    LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
+                    mapSpinner.performClick(); // Activates the map spinner list.
                 }
             }
         });
@@ -458,7 +455,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             public void onClick(View v) {
 
                 if (!noTouch) {
-                    lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
+                    LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
                     zoomOnPoint(1.5f, mid); // Performs zoom in on the midpoint of the map.
                 }
             }
@@ -471,7 +468,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             public void onClick(View v) {
 
                 if (!noTouch) {
-                    lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
+                    LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
                     zoomOnPoint(0.7f, mid); // Performs zoom out from the midpoint of the map.
                 }
             }
@@ -481,7 +478,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     // setUSpinner(): Sets up the map spinner list for the map selection menu.
     private void setUpSpinner(boolean isResume) {
 
-        String[] mapList = lttm_menus.setMapList(this, lttm_maps.getInstance().gameName); // Sets up the lists for the mapSpinner object.
+        String[] mapList = lttm_menus.setMapList(this, LTTMMapData.getInstance().getGameName()); // Sets up the lists for the mapSpinner object.
         lttm_menus.createMapSpinner(this, mapSpinner, mapList); // Creates a customized spinner for mapSpinner.
         if (isResume) { mapSpinner.setSelection(spinner_choice); } // Sets the mapSpinner position to it's previous position.
         mapSpinner.setOnItemSelectedListener(this); // Sets a listener to the mapSpinner object.
@@ -497,7 +494,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
 
             // When the spinner is pressed, it plays a sound effect.
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                lttm_sounds.getInstance().playSoundEffect(1); // Plays the 'Menu' sound effect.
+                LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the 'Menu' sound effect.
             }
 
             return false;
@@ -685,7 +682,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
                     @Override
                     public boolean onDoubleTap(MotionEvent rawEvent) {
 
-                        lttm_sounds.getInstance().playSoundEffect(1); // Plays the "Menu" sound effect.
+                        LTTMSounds.getInstance().playSoundEffect(1, LTTMWorldViewActivity.this); // Plays the "Menu" sound effect.
 
                         // Retrieves the x and y coordinates where double tap was detected.
                         float x = rawEvent.getX();
@@ -750,13 +747,13 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     private void loadImage(String mapName, Callback callback) {
 
         // Retrieves the map width and height.
-        Point mapDimen = LTTMImages.getImageDimensions(getResources(), lttm_maps.getInstance().mapViewImage);
+        Point mapDimen = LTTMImages.getImageDimensions(getResources(), LTTMMapData.getInstance().getMapViewImage());
         mapWidth = mapDimen.x; // Map image's width property.
         mapHeight = mapDimen.y; // Map image's height property.
 
         // If "MEDIUM" graphics mode has been enabled and the map is larger than 2048 x 2048,
         // hardware acceleration is disabled for the map.
-        if ( (lttm_maps.getInstance().graphicsMode == 1) && (lttm_maps.getInstance().isLarge)) {
+        if ( (LTTMMapData.getInstance().getGraphicsMode() == 1) && (LTTMMapData.getInstance().isLarge())) {
 
             // Disables hardware acceleration on the View container.
             if (api_level >= 11) { LTTMOpenGL.enableHardwareAcceleration(worldView, false); }
@@ -770,7 +767,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         }
 
         Picasso.with(this)
-                .load(lttm_maps.getInstance().mapViewImage)
+                .load(LTTMMapData.getInstance().getMapViewImage())
                 .placeholder(R.drawable.lttm_transparent_tile)
                 .noFade()
                 .withOptions(LTTMImages.setBitmapOptions())
@@ -827,14 +824,14 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         clearMap(); // Sets the map resources to blank images to free up memory resources.
         displayLoadingScreen(); // Displays the loading screen objects.
         mapTitle.setText(mapName); // Sets the map name for the top bar.
-        lttm_maps.getInstance().mapSelector(mapName); // Retrieves the selected map from mapSelector in lttm_maps.
+        LTTMMapData.getInstance().mapSelector(mapName); // Retrieves the selected map from mapSelector in LTTMMapData.
 
         // Plays the appropriate song with the map.
-        currentSong = lttm_maps.getInstance().mapSong; // Retrieves the song associated with the map.
-        lttm_sounds.getInstance().playMapSong(currentSong); // Plays the menu song for WorldView activity.
+        currentSong = LTTMMapData.getInstance().getMapSong(); // Retrieves the song associated with the map.
+        LTTMSounds.getInstance().playMapSong(currentSong, this); // Plays the menu song for WorldView activity.
 
         // Plays the 'Stairs' sound effect on map change.
-        if (!initialMapLoad && !map_reload) { lttm_sounds.getInstance().playSoundEffect(5); }
+        if (!initialMapLoad && !map_reload) { LTTMSounds.getInstance().playSoundEffect(5, this); }
 
         // Callback object that is utilized with Picasso for loading the mapView image.
         Callback callback = new Callback() {
@@ -924,13 +921,13 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         matrix_recalculate = LTTMPreferences.getMatrixRecalculate(LTTM_temps); // MATRIX RECALCULATE setting.
         spinner_choice = LTTMPreferences.getCurrentWorld(LTTM_temps);  // SPINNER POSITION setting.
 
-        // Assigns the shared preference values to the lttm_maps & lttm_sounds class variables.
-        lttm_maps.getInstance().gameName = LTTMPreferences.getSelectedGame(LTTM_temps);
-        lttm_maps.getInstance().graphicsMode = LTTMPreferences.getGraphicsMode(LTTM_prefs);
-        lttm_maps.getInstance().labelsOn = LTTMPreferences.getLabelOn(LTTM_prefs);
-        lttm_sounds.getInstance().musicOn = LTTMPreferences.getMusicOn(LTTM_prefs);
-        lttm_sounds.getInstance().soundOn = LTTMPreferences.getSoundOn(LTTM_prefs);
-        lttm_sounds.getInstance().songPosition = 0; // Required to avoid audio resume playback bug.
+        // Assigns the shared preference values to the LTTMMapData & LTTMSounds class variables.
+        LTTMMapData.getInstance().setGameName(LTTMPreferences.getSelectedGame(LTTM_temps));
+        LTTMMapData.getInstance().setGraphicsMode(LTTMPreferences.getGraphicsMode(LTTM_prefs));
+        LTTMMapData.getInstance().setLabelsOn(LTTMPreferences.getLabelOn(LTTM_prefs));
+        LTTMSounds.getInstance().setMusicOn(LTTMPreferences.getMusicOn(LTTM_prefs));
+        LTTMSounds.getInstance().setSoundOn(LTTMPreferences.getSoundOn(LTTM_prefs));
+        LTTMSounds.getInstance().setSongPosition(0); // Required to avoid audio resume playback bug.
     }
 
     /** ADDITIONAL FUNCTIONALITY _______________________________________________________________ **/
@@ -942,7 +939,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         // prevent multiple activities from launching.
         if (!isLoading) {
 
-            LTTMSounds.getInstance().playSoundEffect(3);
+            LTTMSounds.getInstance().playSoundEffect(3, this);
 
             // Sets the boolean value to specify that the LTTMWorldView activity is no longer in focus.
             LTTMPreferences.setWorldView(false, LTTM_temps);
@@ -961,7 +958,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
     private void returnToWorld(String parent) {
 
         // If the parent map is not "ROOT", the specified parent map is loaded.
-        if ( !(parent.equals("ROOT")) ) { mapSpinner.setSelection(lttm_maps.getInstance().parentID); }
+        if ( !(parent.equals("ROOT")) ) { mapSpinner.setSelection(LTTMMapData.getInstance().getParentID()); }
 
         // Otherwise, the activity is concluded and focus returns to the MainActivity activity.
         else {
@@ -969,7 +966,7 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
             // Checks to see if the user has already pressed the back button to prevent song playback
             // from stopping in MainActivity.
             if (!isEnding) {
-                lttm_sounds.getInstance().stopSong(); // Terminate any playing songs.
+                LTTMSounds.getInstance().stopSong(); // Terminate any playing songs.
                 isEnding = true; // Sets the value to indicate that the activity is already ending.
             }
 
@@ -985,18 +982,18 @@ public class LTTMWorldViewActivity extends Activity implements View.OnTouchListe
         // Checks to see if the LTTMSounds audio object is null or not. This is to fix an null
         // pointer bug where the LTTMSounds audio object is recycled during a lengthy onPause() state
         // and needs to be re-initialized.
-        if (lttm_sounds.getInstance() == null) {
+        if (LTTMSounds.getInstance() == null) {
 
             try {
-                lttm_sounds.getInstance().initializeLTTM(this); // Initializes the LTTMSounds class object.
-                lttm_sounds.getInstance().loadLTTMsounds(); // Loads the soundPool with a hash map of sound effects.
+                LTTMSounds.getInstance().initializeLTTM(); // Initializes the LTTMSounds class object.
+                LTTMSounds.getInstance().loadLTTMsounds(this); // Loads the soundPool with a hash map of sound effects.
             }
 
             catch (NullPointerException e) { e.printStackTrace(); } // Null pointer exception handling.
         }
 
-        lttm_sounds.getInstance().stopSong(); // Terminate any playing songs.
-        lttm_sounds.getInstance().playSoundEffect(2); // Plays the sound effect.
+        LTTMSounds.getInstance().stopSong(); // Terminate any playing songs.
+        LTTMSounds.getInstance().playSoundEffect(2, this); // Plays the sound effect.
 
         LTTMError.handleError(error, this); // Initiates error handling
     }

@@ -42,8 +42,9 @@ public class LTTMMemory {
 
         if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
 
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            int i = 0;
+            for (int x : new int[((ViewGroup) view).getChildCount()]) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i++));
             }
 
             ((ViewGroup) view).removeAllViews(); // Removes all View objects in the ViewGroup.

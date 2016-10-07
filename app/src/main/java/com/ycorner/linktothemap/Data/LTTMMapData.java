@@ -15,38 +15,38 @@ public class LTTMMapData {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // INSTANCE VARIABLES
+    private static LTTMMapData lttmMaps; // LTTMMapData instance variable.
+
     // MAP VARIABLES
-    public boolean animatedBG; // Used to determine if the background tiles need to be animated.
-    public boolean isLarge; // Used for determining if the map image is larger than 2560x2560 in size.
-    public boolean isWeb; // Used for determining if the map image needs to be downloaded from the Internet.
-    public boolean labelsOn; // Stores the value of the map labels option.
-    public int BGTimer; // Stores the value of the animated background timer.
-    public int mapViewImage, mapOverlayImage, mapUnderlayImage; // Stores the map resource values.
-    public int graphicsMode; // Stores the current graphics mode value.
-    public int parentID; // Stores the spinner position of the parent map.
-    public LinkedList<Integer> mapUnderlayImageSet; // Stores the list of map underlay resources.
-    public String gameName; // Stores the name of the current game.
-    public String mapSong; // Stores the name of the song that corresponds with the map.
-    public String mapType; // Stores the type of map that corresponds with the current map.
-    public String parentMap; // Stores the name of the parent map.
-    
-    // TODO: New variables
-    public boolean hasDungeons;
-    //public LinkedList<LTTMMap> floorMapList; // Stores the list of maps.
-    public LTTMMap floorMaps;
+    private boolean animatedBG; // Used to determine if the background tiles need to be animated.
+    private boolean isLarge; // Used for determining if the map image is larger than 2560x2560 in size.
+    private boolean isWeb; // Used for determining if the map image needs to be downloaded from the Internet.
+    private boolean labelsOn; // Stores the value of the map labels option.
+    private int BGTimer; // Stores the value of the animated background timer.
+    private int mapViewImage, mapOverlayImage, mapUnderlayImage; // Stores the map resource values.
+    private int graphicsMode; // Stores the current graphics mode value.
+    private int parentID; // Stores the spinner position of the parent map.
+    private LinkedList<Integer> mapUnderlayImageSet; // Stores the list of map underlay resources.
+    private String gameName; // Stores the name of the current game.
+    private String mapSong; // Stores the name of the song that corresponds with the map.
+    private String mapType; // Stores the type of map that corresponds with the current map.
+    private String parentMap; // Stores the name of the parent map.
+    private boolean hasDungeons;
+    //private LinkedList<LTTMMap> floorMapList; // Stores the list of maps.
+    private LTTMMap floorMaps;
 
-    /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
-
-    // LTTMMapData(): Constructor for the LTTMMapData class.
-    private final static LTTMMapData lttmMaps = new LTTMMapData();
-
-    // LTTMMapData(): Deconstructor for the LTTMMapData class.
-    private LTTMMapData() {}
+    /** INSTANCE FUNCTIONALITY _________________________________________________________________ **/
 
     // getInstance(): Returns the lttmMap instance.
     public static LTTMMapData getInstance() {
+        if (lttmMaps == null) {
+            lttmMaps = new LTTMMapData();
+        }
         return lttmMaps;
     }
+
+    /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
     // initializeLTTM(): Initializes the LTTMMapData class variables.
     public void initializeLTTM() {
@@ -154,5 +154,145 @@ public class LTTMMapData {
         hasDungeons = false;
         //floorMapList.clear();
         floorMaps = new LTTMMap();
+    }
+
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    public boolean isAnimatedBG() {
+        return animatedBG;
+    }
+
+    public boolean isLarge() {
+        return isLarge;
+    }
+
+    public boolean isWeb() {
+        return isWeb;
+    }
+
+    public boolean isLabelsOn() {
+        return labelsOn;
+    }
+
+    public int getBGTimer() {
+        return BGTimer;
+    }
+
+    public int getMapViewImage() {
+        return mapViewImage;
+    }
+
+    public int getMapOverlayImage() {
+        return mapOverlayImage;
+    }
+
+    public int getMapUnderlayImage() {
+        return mapUnderlayImage;
+    }
+
+    public int getGraphicsMode() {
+        return graphicsMode;
+    }
+
+    public int getParentID() {
+        return parentID;
+    }
+
+    public LinkedList<Integer> getMapUnderlayImageSet() {
+        return mapUnderlayImageSet;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public String getMapSong() {
+        return mapSong;
+    }
+
+    public String getMapType() {
+        return mapType;
+    }
+
+    public String getParentMap() {
+        return parentMap;
+    }
+
+    public boolean isHasDungeons() {
+        return hasDungeons;
+    }
+
+    public LTTMMap getFloorMaps() {
+        return floorMaps;
+    }
+
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setFloorMaps(LTTMMap floorMaps) {
+        this.floorMaps = floorMaps;
+    }
+
+    public void setAnimatedBG(boolean animatedBG) {
+        this.animatedBG = animatedBG;
+    }
+
+    public void setLarge(boolean large) {
+        isLarge = large;
+    }
+
+    public void setWeb(boolean web) {
+        isWeb = web;
+    }
+
+    public void setLabelsOn(boolean labelsOn) {
+        this.labelsOn = labelsOn;
+    }
+
+    public void setBGTimer(int BGTimer) {
+        this.BGTimer = BGTimer;
+    }
+
+    public void setMapViewImage(int mapViewImage) {
+        this.mapViewImage = mapViewImage;
+    }
+
+    public void setMapOverlayImage(int mapOverlayImage) {
+        this.mapOverlayImage = mapOverlayImage;
+    }
+
+    public void setMapUnderlayImage(int mapUnderlayImage) {
+        this.mapUnderlayImage = mapUnderlayImage;
+    }
+
+    public void setGraphicsMode(int graphicsMode) {
+        this.graphicsMode = graphicsMode;
+    }
+
+    public void setParentID(int parentID) {
+        this.parentID = parentID;
+    }
+
+    public void setMapUnderlayImageSet(LinkedList<Integer> mapUnderlayImageSet) {
+        this.mapUnderlayImageSet = mapUnderlayImageSet;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public void setMapSong(String mapSong) {
+        this.mapSong = mapSong;
+    }
+
+    public void setMapType(String mapType) {
+        this.mapType = mapType;
+    }
+
+    public void setParentMap(String parentMap) {
+        this.parentMap = parentMap;
+    }
+
+    public void setHasDungeons(boolean hasDungeons) {
+        this.hasDungeons = hasDungeons;
     }
 }

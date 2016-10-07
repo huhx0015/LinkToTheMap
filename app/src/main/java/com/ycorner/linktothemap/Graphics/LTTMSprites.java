@@ -14,30 +14,32 @@ public class LTTMSprites {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    // LTTMWorldView Activity Sprites:
-    public int globeIcon; // Stores the reference ID of globe icon.
-    public int loadingName; // Stores the reference ID of the loading screen.
-    public int treasureName; // Stores the reference ID of the treasure icon (closed).
-    public int treasureNameOpen; // Stores the reference ID of the treasure icon (opened).
-    public int mapName; // Stores the reference ID of the map button icon.
-    public int mapNameHD; // Stores the reference ID of the 1080p version of the map button icon.
-    public int travelName; // Stores the reference ID of the travel door icon.
-    public int travelNameHD; // Stores the reference ID of the 1080p version of the travel door icon.
-    public int treasureNameHD; // Stores the reference ID of the 1080p version of the treasure icon (closed).
-    public int treasureNameOpenHD; // Stores the reference ID of the 1080p version of the treasure icon (opened).
+    // INSTANCE VARIABLE
+    private static LTTMSprites LTTM_SPRITES; // LTTMSprites instance variable.
 
-    /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
+    // SRPITE VARIABLES (LTTMWorldView):
+    private int globeIcon; // Stores the reference ID of globe icon.
+    private int loadingName; // Stores the reference ID of the loading screen.
+    private int treasureName; // Stores the reference ID of the treasure icon (closed).
+    private int treasureNameOpen; // Stores the reference ID of the treasure icon (opened).
+    private int mapName; // Stores the reference ID of the map button icon.
+    private int mapNameHD; // Stores the reference ID of the 1080p version of the map button icon.
+    private int travelName; // Stores the reference ID of the travel door icon.
+    private int travelNameHD; // Stores the reference ID of the 1080p version of the travel door icon.
+    private int treasureNameHD; // Stores the reference ID of the 1080p version of the treasure icon (closed).
+    private int treasureNameOpenHD; // Stores the reference ID of the 1080p version of the treasure icon (opened).
 
-    // LTTMSprites(): Constructor for the LTTMSprites class.
-    private final static LTTMSprites LTTM_SPRITES = new LTTMSprites();
-
-    // LTTMSprites(): Deconstructor for the LTTMSprites class.
-    private LTTMSprites() {}
+    /** INSTANCE FUNCTIONALITY _________________________________________________________________ **/
 
     // getInstance(): Returns the LTTM_SPRITES instance.
     public static LTTMSprites getInstance() {
+        if (LTTM_SPRITES == null) {
+            LTTM_SPRITES = new LTTMSprites();
+        }
         return LTTM_SPRITES;
     }
+
+    /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
     // initializeLTTM(): Initializes the LTTMSprites class variables.
     public void initializeLTTM() {
@@ -63,5 +65,89 @@ public class LTTMSprites {
         if (gameName.equals("loz_alttp")) {
             loadingName = R.drawable.zelda_background;
         }
+    }
+
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    public int getGlobeIcon() {
+        return globeIcon;
+    }
+
+    public int getLoadingName() {
+        return loadingName;
+    }
+
+    public int getTreasureName() {
+        return treasureName;
+    }
+
+    public int getTreasureNameOpen() {
+        return treasureNameOpen;
+    }
+
+    public int getMapName() {
+        return mapName;
+    }
+
+    public int getMapNameHD() {
+        return mapNameHD;
+    }
+
+    public int getTravelName() {
+        return travelName;
+    }
+
+    public int getTravelNameHD() {
+        return travelNameHD;
+    }
+
+    public int getTreasureNameHD() {
+        return treasureNameHD;
+    }
+
+    public int getTreasureNameOpenHD() {
+        return treasureNameOpenHD;
+    }
+
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setGlobeIcon(int globeIcon) {
+        this.globeIcon = globeIcon;
+    }
+
+    public void setLoadingName(int loadingName) {
+        this.loadingName = loadingName;
+    }
+
+    public void setTreasureName(int treasureName) {
+        this.treasureName = treasureName;
+    }
+
+    public void setTreasureNameOpen(int treasureNameOpen) {
+        this.treasureNameOpen = treasureNameOpen;
+    }
+
+    public void setMapName(int mapName) {
+        this.mapName = mapName;
+    }
+
+    public void setMapNameHD(int mapNameHD) {
+        this.mapNameHD = mapNameHD;
+    }
+
+    public void setTravelName(int travelName) {
+        this.travelName = travelName;
+    }
+
+    public void setTravelNameHD(int travelNameHD) {
+        this.travelNameHD = travelNameHD;
+    }
+
+    public void setTreasureNameHD(int treasureNameHD) {
+        this.treasureNameHD = treasureNameHD;
+    }
+
+    public void setTreasureNameOpenHD(int treasureNameOpenHD) {
+        this.treasureNameOpenHD = treasureNameOpenHD;
     }
 }
