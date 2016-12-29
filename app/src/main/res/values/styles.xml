@@ -4,12 +4,20 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:alertDialogTheme">@style/LTTPAlertDialog</item>
     </style>
     <style name="Theme.D1NoTitleDim" parent="android:style/Theme.Translucent">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="LTTPAlertDialog" parent="android:style/Theme.Dialog">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@android:color/transparent</item>
     </style>
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
         <item name="android:windowIsTranslucent">true</item>
