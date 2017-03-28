@@ -4,7 +4,7 @@ Link to the Map
 DEVELOPER: huhx0015
 
 ### LINK TO THE MAP
-![linktothemap_preview](https://cloud.githubusercontent.com/assets/1645482/16185724/d53f8798-367a-11e6-9262-59d6208e08bc.gif)
+![linktothemap_preview](https://cloud.githubusercontent.com/assets/1645482/24391175/66cc753c-1342-11e7-866e-3ab996627791.gif)
 
 ## Description
 

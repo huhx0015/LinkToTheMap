@@ -39,6 +39,10 @@ public class LTTMSounds {
     private final int MAX_SOUND_EVENTS = 25; // Maximum number of sound events before the SoundPool object is reset. Android 2.3 (GINGERBREAD) only.
     private int soundEventCount = 0; // Used to count the number of sound events that have occurred.
 
+    // CONSTANTS VARIABLES:
+    private static final String STOPPED = "STOPPED";
+    private static final String PAUSED = "PAUSED";
+
     // SYSTEM VARIABLES:
     private final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
 
@@ -62,7 +66,7 @@ public class LTTMSounds {
         isPaused = false;
         musicOn = true;
         soundOn = true;
-        currentSong = "STOPPED";
+        currentSong = STOPPED;
         songPosition = 0;
 
         setUpSoundPool(); // Initializes the SoundPool object.
@@ -183,42 +187,29 @@ public class LTTMSounds {
     // changed if the song of the selected map does not match the current map song.
     public void playMapSong(String songName, Context context) {
 
-        boolean musicFound = false; // Used for determining if a corresponding song for mapName was found or not.
         int songID = 0; // Used for storing the reference ID to the raw music resource object.
 
         // If the music option has been enabled, a song is selected based on the passed in songName string.
         if (musicOn) {
 
             if ( (songName.equals("overworld")) && (!currentSong.equals("overworld")) ) {
-
-                // Sets the new map song.
                 songID = R.raw.overworld;
                 currentSong = "overworld";
-                musicFound = true;
             }
 
             else if ( (songName.equals("darkworld")) && (!currentSong.equals("darkworld")) ) {
-
-                // Sets the new map song.
                 songID = R.raw.darkworld;
                 currentSong = "darkworld";
-                musicFound = true;
             }
 
             else if ( (songName.equals("hyrulecastle")) && (!currentSong.equals("hyrulecastle")) ) {
-
-                // Sets the new map song.
                 songID = R.raw.hyrulecastle;
                 currentSong = "hyrulecastle";
-                musicFound = true;
             }
 
             // ---------------------------------------------------------------------------------- //
 
-            // If a map song match was found, play the music file from resources.
-            if ( (musicFound) || (isPaused) ) {
-                playSong(songID, context); // Calls playSong to create a MediaPlayer object and play the song.
-            }
+            if (songID != 0) { playSong(songID, context); } // Plays the music file from resources.
         }
     }
 
@@ -233,7 +224,7 @@ public class LTTMSounds {
             // Pauses the song only if there is a song is currently playing.
             if (mapSong.isPlaying()) { mapSong.pause(); }
             isPaused = true; // Indicates that the song is currently paused.
-            currentSong = "PAUSED";
+            currentSong = PAUSED;
         }
     }
 
@@ -321,7 +312,7 @@ public class LTTMSounds {
 
             // Stops any songs currently playing in the background.
             if (mapSong.isPlaying()) { mapSong.stop(); }
-            currentSong = "STOPPED";
+            currentSong = STOPPED;
         }
     }
 
