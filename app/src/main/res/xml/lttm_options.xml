@@ -4,8 +4,7 @@
         android:key="lttp_options">
         <ListPreference
             android:key="lttp_language"
-            android:title="LANGUAGE"
-            android:defaultValue="English" />
+            android:title="LANGUAGE" />
         <CheckBoxPreference
             android:key="lttp_overlay_on"
             android:title="LABELS"

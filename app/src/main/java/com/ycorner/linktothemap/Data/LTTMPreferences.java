@@ -2,6 +2,9 @@ package com.ycorner.linktothemap.Data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.ycorner.linktothemap.R;
 
 /** -----------------------------------------------------------------------------------------------
  *  [LTTMPreferences] CLASS
@@ -12,11 +15,38 @@ import android.content.SharedPreferences;
 
 public class LTTMPreferences {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    // CONSTANT VARIABLES:
+    private static final String LTTM_TEMPS = "lttp_temps"; // String name for the temporary preferences object.
+
     /** SHARED PREFERENCES FUNCTIONALITY _______________________________________________________ **/
 
     // initializePreferences(): Initializes and returns the SharedPreferences object.
     public static SharedPreferences initializePreferences(String prefType, Context context) {
         return context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
+    }
+
+    // getPreferenceResource(): Selects the appropriate resource based on the shared preference type.
+    private static int getPreferenceResource(String prefType) {
+
+        if (prefType.equals(LTTM_TEMPS)) { return R.xml.lttm_temps; } // Temporary preferences resource file.
+        else { return R.xml.lttm_options; } // Main preferences resource file.
+    }
+
+    // setDefaultPreferences(): Sets the shared preference values to default values.
+    public static void setDefaultPreferences(String prefType, boolean isReset, Context context) {
+
+        int prefResource = getPreferenceResource(prefType); // Determines the appropriate resource file to use.
+
+        // Resets the preference values to default values.
+        if (isReset) {
+            SharedPreferences preferences = initializePreferences(prefType, context);
+            preferences.edit().clear().apply();
+        }
+
+        // Sets the default values for the SharedPreferences object.
+        PreferenceManager.setDefaultValues(context, prefType, Context.MODE_PRIVATE, prefResource, true);
     }
 
     /** GET PREFERENCES FUNCTIONALITY __________________________________________________________ **/
@@ -145,16 +175,6 @@ public class LTTMPreferences {
         SharedPreferences.Editor prefEdit = preferences.edit();
 
         prefEdit.putString("lttp_selected_game", gameName); // Sets the name of the selected game for use in DQWorldView activities.
-        prefEdit.apply(); // Applies the changes to SharedPreferences.
-    }
-
-    // setSongPosition(): Sets the "lttp_song_position" value to preferences.
-    public static void setSongPosition(int position, SharedPreferences preferences) {
-
-        // Prepares the SharedPreferences object for editing.
-        SharedPreferences.Editor prefEdit = preferences.edit();
-
-        prefEdit.putInt("lttp_song_position", position); // Sets the current song position.
         prefEdit.apply(); // Applies the changes to SharedPreferences.
     }
 

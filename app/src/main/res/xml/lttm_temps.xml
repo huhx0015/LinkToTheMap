@@ -4,16 +4,14 @@
         android:key="lttm_temps">
         <EditTextPreference
             android:key="lttm_current_song"
-            android:title="CURRENT SONG"
-            android:defaultValue="STOPPED"/>
+            android:title="CURRENT SONG"/>
         <CheckBoxPreference
             android:key="lttm_download_mode"
             android:title="DOWNLOAD MODE"
             android:defaultValue="false"/>
         <EditTextPreference
             android:key="lttm_error"
-            android:title="ERROR CODE"
-            android:defaultValue="NULL"/>
+            android:title="ERROR CODE"/>
         <CheckBoxPreference
             android:key="lttm_error_mode"
             android:title="ERROR MODE"
@@ -32,11 +30,9 @@
             android:defaultValue="false" />
         <EditTextPreference
             android:key="lttm_selected_game"
-            android:title="SELECTED GAME"
-            android:defaultValue="lttm1_nes"/>
+            android:title="SELECTED GAME"/>
         <CheckBoxPreference
             android:key="lttm_worldview_on"
-            android:title="WORLD VIEW"
-            android:defaultValue="NULL"/>
+            android:title="WORLD VIEW"/>
     </PreferenceCategory>
 </PreferenceScreen>

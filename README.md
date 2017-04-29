@@ -10,13 +10,13 @@ DEVELOPER: huhx0015
 
 This is a demo Android application that allows users to view the light and dark world maps from the classic Super Nintendo game, The Legend of Zelda: A Link to the Past. Users can use touch gestures to scroll in and out of the world map. In addition, this application features graphics, music, and sound effects from the Legend of Zelda: Link to the Past, to induce nostalgia for fans of the game.
 
-Link to the Map utilizes a custom-built map engine, which is also utilized in Dragon Geo, Cid's Aerial Views, and Chrono Maps. In addition, Link to the Map utilizes a custom version of the HX Game Sound Engine library to provide music and sound effects for the application.
+Link to the Map utilizes a custom-built map engine, which is also utilized in Dragon Geo, Cid's Aerial Views, and Chrono Maps. In addition, Link to the Map utilizes the HX Audio Player library to provide music and sound effects for the application.
 
 ## Resources
 
 ### Libraries
 
-* HX Game Sound Engine: https://github.com/huhx0015/HX_GameSoundEngine
+* HX Audio Player: https://github.com/huhx0015/HXAudioPlayer
 
 ### Map
 
