@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.huhx0015.hxaudio.audio.HXMusic;
 import com.huhx0015.hxaudio.audio.HXSound;
 import com.huhx0015.hxaudio.utils.HXAudioPlayerUtils;
 import com.ycorner.linktothemap.Audio.LTTMAudio;
@@ -31,6 +32,9 @@ public class LTTMTitleScreenActivity extends Activity {
     private SharedPreferences LTTM_temps; // SharedPreferences objects that store the settings for the application.
     private static final String LTTM_TEMPS = "lttp_temps";
 
+    // SYSTEM VARIABLES
+    private boolean isConfigChange = false;
+
     // VIEW INJECTION VARIABLES
     @BindView(R.id.title_start_button) Button startButton;
 
@@ -44,9 +48,6 @@ public class LTTMTitleScreenActivity extends Activity {
 
         // AUDIO INITIALIZATION:
         HXSound.load(LTTMAudio.initSoundList(), this);
-
-        // PREFERENCES: Retrieves any preferences that may have been changed in options and applies them accordingly.
-        LTTM_temps = LTTMPreferences.initializePreferences(LTTM_TEMPS, this); // Temporary preferences object.
 
         // ACTIVITY INITIALIZATION: Initializes the activity and sets the XML layout.
         setupLayout();
@@ -76,6 +77,19 @@ public class LTTMTitleScreenActivity extends Activity {
 
         // Recycles all View objects to free up memory resources.
         LTTMMemory.recycleMemory(findViewById(R.id.title_screen_layout), this);
+    }
+
+    /** ACTIVITY EXTENSION FUNCTIONALITY _______________________________________________________ **/
+
+    // BACK KEY:
+    // onBackPressed(): Defines the action to take when the physical back button key is pressed.
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // Clears the HXMusic and HXSound instances.
+        HXMusic.clear();
+        HXSound.clear();
     }
 
     /** LAYOUT FUNCTIONALITY ___________________________________________________________________ **/
